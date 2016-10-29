@@ -19,9 +19,9 @@
   (pbcopy)
   (delete-region (region-beginning) (region-end)))
 
-(global-set-key (kbd "C-c c") 'pbcopy)
-(global-set-key (kbd "C-c v") 'pbpaste)
-(global-set-key (kbd "C-c x") 'pbcut)
+(global-set-key (kbd "C-c C-c") 'pbcopy)
+(global-set-key (kbd "C-c C-v") 'pbpaste)
+(global-set-key (kbd "C-c C-x") 'pbcut)
 
 (global-set-key (kbd "C-c C-r") 'python-shell-send-region)
 
@@ -30,6 +30,11 @@
 
 ;; Shell
 (global-set-key (kbd "C-x C-p") 'shell)
-
 (global-set-key (kbd "C-x C-r") 'replace-string)
 
+;; Org-mode
+(global-set-key (kbd "C-c a") 'org-agenda)
+(global-set-key (kbd "C-c c") 'org-capture)
+
+;; Fullscreen
+(global-set-key (kbd "C-c C-f") 'toggle-frame-fullscreen)

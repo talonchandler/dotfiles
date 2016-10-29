@@ -17,7 +17,7 @@
     (("TeX" "%(PDF)%(tex) %(file-line-error) %(extraopts) %`%S%(PDFout)%(mode)%' %t" TeX-run-TeX nil
       (plain-tex-mode texinfo-mode ams-tex-mode)
       :help "Run plain TeX")
-     ("LaTeX" "%`%l%(mode)%' %t" TeX-run-TeX nil
+     ("LaTeX" "%`%l%(mode)%' %t; open %s" TeX-run-TeX nil
       (latex-mode doctex-mode)
       :help "Run LaTeX")
      ("Makeinfo" "makeinfo %(extraopts) %t" TeX-run-compile nil

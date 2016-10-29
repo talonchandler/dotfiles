@@ -2,9 +2,29 @@
 (setq user-full-name "Talon Chandler")
 (setq user-mail-address "talonchandler@talonchandler.com")
 
+;; Turn on packages
+(require 'package)
+(add-to-list 'package-archives
+	     '("melpa" . "http://melpa.org/packages/")
+	     '("elpy" . "http://jorgenschaefer.github.io/packages/"))
+(package-initialize)
+
+
+;; Fill column indicator 
+(require 'fill-column-indicator)
+
+(setq fci-rule-color "white")
+(setq-default fill-column 80)
+(setq fci-rule-column 80)
+(setq fci-rule-use-dashes nil)
+
 ;; Major and minor modes
-(add-hook 'prog-mode-hook 'fci-mode)
-(add-hook 'text-mode-hook 'flyspell-mode)
+(add-hook 'python-mode-hook 'fci-mode)
+(add-hook 'python-mode-hook 'linum-mode)
+(add-hook 'LaTeX-mode-hook 'fci-mode)
+(add-hook 'LaTeX-mode-hook 'linum-mode)
+(add-hook 'LaTeX-mode-hook 'flyspell-mode)
+(add-hook 'lisp-mode-hook 'linum-mode)
 
 ;; Skip splash screen
 (setq inhibit-startup-message t)
@@ -20,13 +40,24 @@
 
 ;; Appearance customize
 (custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :background "Black" :foreground "white" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 1 :width normal :foundry "default" :family "default"))))
+ '(default ((t (:inherit nil
+		:stipple nil
+		:background "Black"
+		:foreground "light grey"
+		:inverse-video nil
+		:box nil
+		:strike-through nil
+		:overline nil
+		:underline nil
+		:slant normal
+		:weight normal
+		:height 1
+		:width  normal
+		:foundry "default" :
+		family "default"))))
  '(dired-flagged ((t (:inherit default))))
  '(dired-marked ((t (:inherit default) fault))))
+
 
 
 ;; Octave
@@ -42,7 +73,7 @@
 		                (font-lock-mode 1))))
 
 ;; Display settings
-(setq mac-allow-anti-aliasing nil)
+(setq mac-allow-anti-aliasing t)
 
 ;; Bell off
 (setq ring-bell-function 'ignore)
@@ -62,7 +93,6 @@
       version-control t)
 
 ;; Line number on
-(global-linum-mode 1)
 (setq linum-format "%d ")
 
 ;; Mouse on
@@ -80,19 +110,14 @@
   (setq mouse-sel-mode t)
 )
 
-;; Hide menu bar
+;; Hide menu bars
 (menu-bar-mode -1)
-
-;; Turn on packages
-(require 'package)
-(add-to-list 'package-archives
-	     '("melpa" . "http://melpa.org/packages/")
-	     '("elpy" . "http://jorgenschaefer.github.io/packages/"))
-(package-initialize)
+(toggle-scroll-bar -1)
+(tool-bar-mode -1)
 
 ;; Elpy
 (elpy-enable)
-(elpy-use-ipython)
+;;(elpy-use-ipython)
 
 ;; Use ido
 (require 'ido)
@@ -100,17 +125,6 @@
 
 ;; Use autocomplete
 (global-auto-complete-mode t)
-
-;; Use fill-column-indicator
-(require 'fill-column-indicator)
-;;(define-globalized-minor-mode
-;;  global-fci-mode fci-mode (lambda () (fci-mode 1)))
-;;(global-fci-mode t)
-
-(setq fci-rule-color "white")
-(setq-default fill-column 80)
-(setq fci-rule-column 80)
-(setq fci-rule-use-dashes nil)
 
 ;; Asymptote
 (add-to-list 'load-path "/usr/local/texlive/2015/texmf-dist/asymptote")
@@ -122,8 +136,50 @@
 ;; Shell load .bash_profile
 (setenv "PATH" (shell-command-to-string "source ~/.bash_rc; echo -n $PATH"))
 
+;; org-mode
+(setq org-todo-keywords
+      '((sequence "TODO(t)" "WAITING(w)" "|" "DONE(d)")))
+(setq org-log-done 'time)
+(setq org-default-notes-file "/Users/Talon/GoogleDrive/capture.org")
+(setq org-archive-location "~/GoogleDrive/archive/datetree.org::datetree/* Finished Tasks")
+(setq org-enforce-todo-dependencies t)
+
+
+;; gmail to bb
+(add-to-list 'load-path "~/.emacs.d/lisp/")
+(autoload 'gmail2bbdb-import-file "gmail2bbdb" nil t nil)
+
+;; Read html
+(setq mm-text-html-renderer 'w3m)
+(setq org-return-follows-link 't)
+
+;; Set location
+(setq calendar-latitude 41.9)
+(setq calendar-longitude -87.6)
+(setq calendar-location-name "Chicago, IL")
+
+;; Font
+(add-to-list 'default-frame-alist '(font . "Monaco 12"))
+(if (string-equal system-type "darwin")
+    (set-fontset-font "fontset-default"
+                      'unicode
+                      '("Monaco" . "iso10646-1")))
+
+;; Docview
+(setq doc-view-resolution 300)
+
+;; Xterm color
+(progn (add-hook 'comint-preoutput-filter-functions 'xterm-color-filter)
+       (setq comint-output-filter-functions (remove 'ansi-color-process-output comint-output-filter-functions)))
+
+;; Cursor
+(blink-cursor-mode 0)
+(setq-default cursor-in-non-selected-windows nil)
+
 ;; Initial window layout
-(split-window-below -15)
+(find-file "~/GoogleDrive/projects.org")
+(split-window-right)
 (other-window 1)
 (shell "*shell1*")
-(other-window 1)
+(toggle-frame-fullscreen)
+
