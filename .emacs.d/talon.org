@@ -266,9 +266,9 @@ i.e. change right window to bottom, or change bottom window to right."
 ** Color
 #+begin_src emacs-lisp :tangle yes
 ;;(load-file "~/.emacs.d/xterm-color/xterm-color.el")
-(require 'xterm-color)
-(progn (add-hook 'comint-preoutput-filter-functions 'xterm-color-filter)
-       (setq comint-output-filter-functions (remove 'ansi-color-process-output comint-output-filter-functions)))
+;;(require 'xterm-color)
+;;(progn (add-hook 'comint-preoutput-filter-functions 'xterm-color-filter)
+;;       (setq comint-output-filter-functions (remove 'ansi-color-process-output comint-output-filter-functions)))
 #+END_SRC
 
 ** Font
@@ -289,4 +289,6 @@ i.e. change right window to bottom, or change bottom window to right."
 (other-window 1)
 (org-agenda-list)
 (balance-windows)
+(other-window 1)
 #+END_SRC
+  
