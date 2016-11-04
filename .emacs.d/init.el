@@ -1,3 +1,4 @@
+
 (package-initialize)
 
 ;; LaTeX
@@ -61,7 +62,9 @@
  '(org-agenda-files
    (quote
     ("~/GoogleDrive/capture.org" "~/GoogleDrive/someday.org" "~/GoogleDrive/reference.org" "~/GoogleDrive/projects.org")))
- '(package-selected-packages (quote (fill-column-indicator elpy auto-complete)))
+ '(package-selected-packages
+   (quote
+    (xterm-color cl-lib fill-column-indicator elpy auto-complete)))
  '(send-mail-function (quote mailclient-send-it)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -73,55 +76,7 @@
  '(dired-marked ((t (:inherit default) fault))))
 
 ;; Latex customize
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(TeX-command-list
-   (quote
-    (("TeX" "%(PDF)%(tex) %(file-line-error) %(extraopts) %`%S%(PDFout)%(mode)%' %t" TeX-run-TeX nil
-      (plain-tex-mode texinfo-mode ams-tex-mode)
-      :help "Run plain TeX")
-     ("LaTeX" "%`%l%(mode)%' %t; open %s" TeX-run-TeX nil
-      (latex-mode doctex-mode)
-      :help "Run LaTeX")
-     ("Makeinfo" "makeinfo %(extraopts) %t" TeX-run-compile nil
-      (texinfo-mode)
-      :help "Run Makeinfo with Info output")
-     ("Makeinfo HTML" "makeinfo %(extraopts) --html %t" TeX-run-compile nil
-      (texinfo-mode)
-      :help "Run Makeinfo with HTML output")
-     ("AmSTeX" "%(PDF)amstex %(extraopts) %`%S%(PDFout)%(mode)%' %t" TeX-run-TeX nil
-      (ams-tex-mode)
-      :help "Run AMSTeX")
-     ("ConTeXt" "texexec --once --texutil %(extraopts) %(execopts)%t" TeX-run-TeX nil
-      (context-mode)
-      :help "Run ConTeXt once")
-     ("ConTeXt Full" "texexec %(extraopts) %(execopts)%t" TeX-run-TeX nil
-      (context-mode)
-      :help "Run ConTeXt until completion")
-     ("BibTeX" "bibtex %s" TeX-run-BibTeX nil t :help "Run BibTeX")
-     ("Biber" "biber %s" TeX-run-Biber nil t :help "Run Biber")
-     ("View" "open %s.pdf" TeX-run-command t t :help "Run Text viewer")
-     ("Print" "%p" TeX-run-command t t :help "Print the file")
-     ("Queue" "%q" TeX-run-background nil t :help "View the printer queue" :visible TeX-queue-command)
-     ("File" "%(o?)dvips %d -o %f " TeX-run-command t t :help "Generate PostScript file")
-     ("Index" "makeindex %s" TeX-run-command nil t :help "Create index file")
-     ("Xindy" "texindy %s" TeX-run-command nil t :help "Run xindy to create index file")
-     ("Check" "lacheck %s" TeX-run-compile nil
-      (latex-mode)
-      :help "Check LaTeX file for correctness")
-     ("ChkTeX" "chktex -v6 %s" TeX-run-compile nil
-      (latex-mode)
-      :help "Check LaTeX file for common mistakes")
-     ("Spell" "(TeX-ispell-document \"\")" TeX-run-function nil t :help "Spell-check the document")
-     ("Clean" "TeX-clean" TeX-run-function nil t :help "Delete generated intermediate files")
-     ("Clean All" "(TeX-clean t)" TeX-run-function nil t :help "Delete generated intermediate and output files")
-     ("Other" "" TeX-run-command t t :help "Run an arbitrary command"))))
- '(custom-safe-themes
-   (quote
-    ("ad24ea739f229477ea348af968634cb7a0748c9015110a777c8effeddfa920f5" "e7ec0cc3ce134cc0bd420b98573bbd339a908ac24162b8034c98e1ba5ee1f9f6" default))))
+
 
 ;(global-set-key (kbd "C-r") 'replace-string)
 ;(global-set-key (kbd "C-i") 'previous-buffer)
@@ -205,24 +160,7 @@
 (defalias 'yes-or-no-p 'y-or-n-p)
 
 ;; Appearance customize
-(custom-set-faces
- '(default ((t (:inherit nil
-		:stipple nil
-		:background "Black"
-		:foreground "light grey"
-		:inverse-video nil
-		:box nil
-		:strike-through nil
-		:overline nil
-		:underline nil
-		:slant normal
-		:weight normal
-		:height 1
-		:width  normal
-		:foundry "default" :
-		family "default"))))
- '(dired-flagged ((t (:inherit default))))
- '(dired-marked ((t (:inherit default) fault))))
+
 
 
 
@@ -281,23 +219,23 @@
 (toggle-scroll-bar -1)
 (tool-bar-mode -1)
 
-;; Elpy
-(elpy-enable)
-;;(elpy-use-ipython)
+;; ;; Elpy
+;;(elpy-enable)
+;; ;;(elpy-use-ipython)
 
-;; Use ido
-(require 'ido)
-(ido-mode t)
+;; ;; Use ido
+;; (require 'ido)
+;; (ido-mode t)
 
-;; Use autocomplete
-(global-auto-complete-mode t)
+;; ;; Use autocomplete
+;; (global-auto-complete-mode t)
 
-;; Asymptote
-(add-to-list 'load-path "/usr/local/texlive/2015/texmf-dist/asymptote")
-(autoload 'asy-mode "asy-mode.el" "Asymptote major mode." t)
-(autoload 'lasy-mode "asy-mode.el" "hybrid Asymptote/Latex major mode." t)
-(autoload 'asy-insinuate-latex "asy-mode.el" "Asymptote insinuate LaTeX." t)
-(add-to-list 'auto-mode-alist '("\\.asy$" . asy-mode))
+;; ;; Asymptote
+;; (add-to-list 'load-path "/usr/local/texlive/2015/texmf-dist/asymptote")
+;; (autoload 'asy-mode "asy-mode.el" "Asymptote major mode." t)
+;; (autoload 'lasy-mode "asy-mode.el" "hybrid Asymptote/Latex major mode." t)
+;; (autoload 'asy-insinuate-latex "asy-mode.el" "Asymptote insinuate LaTeX." t)
+;; (add-to-list 'auto-mode-alist '("\\.asy$" . asy-mode))
 
 
 ;; org-mode
@@ -337,22 +275,13 @@
 
 ;; Xterm color
 ;;(require 'xterm-color)
-;;(progn (add-hook 'comint-preoutput-filter-functions 'xterm-color-filter)
-;;       (setq comint-output-filter-functions (remove 'ansi-color-process-output comint-output-filter-functions)))
 
 ;; Cursor
 (blink-cursor-mode 0)
 (setq-default cursor-in-non-selected-windows nil)
 
-;; Initial window layout
-(shell "*shell1*")
-(find-file "~/GoogleDrive/projects.org")
-(split-window-below)
-(other-window 1)
-(org-agenda-list)
-(balance-windows)
 
-;;
+;; Flip window orientation
 (defun window-toggle-split-direction ()
   "Switch window split from horizontally to vertically, or vice versa.
 
@@ -381,3 +310,17 @@ i.e. change right window to bottom, or change bottom window to right."
                 (set-window-buffer (windmove-find-other-window neighbour-dir) other-buf))))))))
 
 (global-set-key (kbd "C-x 8") 'window-toggle-split-direction)
+
+;; Initial window layout
+(when window-system (set-frame-size (selected-frame) 88 47))
+(shell "*shell1*")
+(find-file "~/GoogleDrive/projects.org")
+(split-window-below)
+(other-window 1)
+(org-agenda-list)
+(balance-windows)
+
+;;(load-file "~/.emacs.d/xterm-color/xterm-color.el")
+(require 'xterm-color)
+(progn (add-hook 'comint-preoutput-filter-functions 'xterm-color-filter)
+       (setq comint-output-filter-functions (remove 'ansi-color-process-output comint-output-filter-functions)))

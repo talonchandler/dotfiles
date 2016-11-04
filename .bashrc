@@ -19,6 +19,7 @@ alias medphys='ssh -X talonchandler@shmi.bsd.uchicago.edu'
 alias midway='ssh -X talonchandler@midway.rcc.uchicago.edu'
 alias siraf='ssh -X talonchandler@siraf-login.bsd.uchicago.edu'
 alias pw='emacs ~/GoogleDrive/Personal/ID/passwords.gpg'
+#alias emacs='emacs &'
 alias python='python3'
 alias wolfram='/Applications/Mathematica.app/Contents/MacOS/MathKernel'
 
