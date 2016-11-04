@@ -1,0 +1,292 @@
+* Starting up
+** Package initialize
+#+begin_src emacs-lisp :tangle yes
+(package-initialize)
+(require 'package)
+(add-to-list 'package-archives
+	     '("melpa" . "http://melpa.org/packages/")
+	     '("elpy" . "http://jorgenschaefer.github.io/packages/"))
+(setq package-enable-at-startup nil)
+#+END_SRC
+* Personal information
+#+BEGIN_SRC emacs-lisp :tangle yes
+(setq user-full-name "Talon Chandler")
+(setq user-mail-address "talonchandler@talonchandler.com")
+(setq calendar-latitude 41.9)
+(setq calendar-longitude -87.6)
+(setq calendar-location-name "Chicago, IL")
+#+END_SRC
+
+* Backups
+#+begin_src emacs-lisp :tangle yes
+(setq backup-directory-alist `(("." . "~/.saves")))
+(setq backup-by-copying t)
+(setq delete-old-versions t
+      kept-new-versions 6
+      kept-old-versions 2
+      version-control t)
+#+END_SRC
+
+* Modes
+** Org-mode
+#+begin_src emacs-lisp :tangle yes
+(setq org-directory "/Users/Talon/GoogleDrive/")
+
+(setq org-todo-keywords
+      '((sequence "TODO(t)" "WAITING(w)" "|" "DONE(d)")))
+(setq org-log-done 'time)
+
+(setq org-default-notes-file "capture.org")
+(setq org-agenda-files (quote ("capture.org" "someday.org" "reference.org" "projects.org")))
+(setq org-archive-location "archive/datetree.org::datetree/* Finished Tasks")
+(setq org-enforce-todo-dependencies t)
+
+(global-set-key (kbd "C-c a") 'org-agenda)
+(global-set-key (kbd "C-c c") 'org-capture)
+#+END_SRC
+** Python
+#+begin_src emacs-lisp :tangle yes
+;;(elpy-enable)
+;;(elpy-use-ipython)
+(global-set-key (kbd "C-c C-r") 'python-shell-send-region)
+(global-set-key (kbd "C-t") 'transpose-chars)
+#+END_SRC
+** Octave
+#+begin_src emacs-lisp :tangle yes
+(autoload 'octave-mode "octave-mod" "Loading octave-mode" t)
+(add-to-list 'auto-mode-alist '("\\.m\\'" . octave-mode))
+
+(add-hook 'octave-mode-hook
+	  (lambda ()
+	    (setq tab-width 4)
+	    (abbrev-mode 1)
+	    (auto-fill-mode 1)
+	    (if (eq window-system 'x)
+		                (font-lock-mode 1))))
+#+END_SRC
+
+** Asymptote
+#+begin_src emacs-lisp :tangle yes
+(add-to-list 'load-path "/usr/local/texlive/2015/texmf-dist/asymptote")
+(autoload 'asy-mode "asy-mode.el" "Asymptote major mode." t)
+(autoload 'lasy-mode "asy-mode.el" "hybrid Asymptote/Latex major mode." t)
+(autoload 'asy-insinuate-latex "asy-mode.el" "Asymptote insinuate LaTeX." t)
+(add-to-list 'auto-mode-alist '("\\.asy$" . asy-mode))
+#+END_SRC
+
+** Shell 
+#+begin_src emacs-lisp :tangle yes
+;; Shell load .bash_profile
+(setenv "PATH" (shell-command-to-string "source ~/.bash_rc; echo -n $PATH"))
+(global-set-key (kbd "C-x C-p") 'shell)
+(global-set-key (kbd "C-x C-r") 'replace-string)
+#+END_SRC
+** Docview
+#+begin_src emacs-lisp :tangle yes
+(setq doc-view-resolution 300)
+#+END_SRC
+** Fill column indicator 
+#+begin_src emacs-lisp :tangle yes
+(require 'fill-column-indicator)
+(setq fci-rule-color "white")
+(setq-default fill-column 80)
+(setq fci-rule-column 80)
+(setq fci-rule-use-dashes nil)
+#+END_SRC
+** LaTeX
+#+begin_src emacs-lisp :tangle yes
+(getenv "PATH")
+(setenv "PATH"
+	(concat "/usr/texbin" ":"
+(getenv "PATH")))
+(setq TeX-PDF-mode t)
+(setq TeX-save-query nil) ;;autosave before compiling
+#+END_SRC
+** Minor mode hooks
+#+begin_src emacs-lisp :tangle yes
+(add-hook 'python-mode-hook 'fci-mode)
+(add-hook 'python-mode-hook 'linum-mode)
+(add-hook 'LaTeX-mode-hook 'fci-mode)
+(add-hook 'LaTeX-mode-hook 'linum-mode)
+(add-hook 'LaTeX-mode-hook 'flyspell-mode)
+(add-hook 'lisp-mode-hook 'linum-mode)
+#+END_SRC
+** Misc 
+#+begin_src emacs-lisp :tangle yes
+;; Use ido
+(require 'ido)
+(ido-mode t)
+
+
+
+;; Use autocomplete
+(global-auto-complete-mode t)
+
+;; Read html
+(setq mm-text-html-renderer 'w3m)
+(setq org-return-follows-link 't)
+
+;; gmail to bb
+(add-to-list 'load-path "~/.emacs.d/lisp/")
+(autoload 'gmail2bbdb-import-file "gmail2bbdb" nil t nil)
+#+END_SRC
+
+* Custom behaviours
+** Intuitive text marking
+#+begin_src emacs-lisp :tangle yes
+(delete-selection-mode t) ;; Deletes selection when you start typing
+(transient-mark-mode t)
+(setq x-select-enable-clipboard t)
+#+END_SRC
+** Simplify yes-no
+#+begin_src emacs-lisp :tangle yes
+(defalias 'yes-or-no-p 'y-or-n-p)
+#+END_SRC
+** Bell off
+#+begin_src emacs-lisp :tangle yes
+(setq ring-bell-function 'ignore)
+#+END_SRC
+** Fast key response
+#+begin_src emacs-lisp :tangle yes
+(setq echo-keystrokes 0.1)
+#+END_SRC
+** Visible bell
+#+begin_src emacs-lisp :tangle yes
+(setq visible-bell t)
+#+END_SRC
+** Show line number
+#+begin_src emacs-lisp :tangle yes
+(setq linum-format "%d ")
+#+END_SRC
+** Mouse on
+#+begin_src emacs-lisp :tangle yes
+(unless window-system
+  (require 'mouse)
+  (xterm-mouse-mode 1)
+  (global-set-key [mouse-1] '(mouse-set-point))
+  (global-set-key [mouse-4] '(lambda ()
+			       (interactive)
+			       (scroll-down 1)))
+  (global-set-key [mouse-5] '(lambda ()
+			       (interactive)
+			       (scroll-up 1)))
+  (defun track-mouse (e))
+  (setq mouse-sel-mode t)
+)
+#+END_SRC
+** Cursor settings
+#+begin_src emacs-lisp :tangle yes
+(blink-cursor-mode 0)
+(setq-default cursor-in-non-selected-windows nil)
+#+END_SRC
+** Flip window orientation
+#+begin_src emacs-lisp :tangle yes
+(defun window-toggle-split-direction ()
+  "Switch window split from horizontally to vertically, or vice versa.
+
+i.e. change right window to bottom, or change bottom window to right."
+  (interactive)
+  (require 'windmove)
+  (let ((done))
+    (dolist (dirs '((right . down) (down . right)))
+      (unless done
+        (let* ((win (selected-window))
+               (nextdir (car dirs))
+               (neighbour-dir (cdr dirs))
+               (next-win (windmove-find-other-window nextdir win))
+               (neighbour1 (windmove-find-other-window neighbour-dir win))
+               (neighbour2 (if next-win (with-selected-window next-win
+                                          (windmove-find-other-window neighbour-dir next-win)))))
+          ;;(message "win: %s\nnext-win: %s\nneighbour1: %s\nneighbour2:%s" win next-win neighbour1 neighbour2)
+          (setq done (and (eq neighbour1 neighbour2)
+                          (not (eq (minibuffer-window) next-win))))
+          (if done
+              (let* ((other-buf (window-buffer next-win)))
+                (delete-window next-win)
+                (if (eq nextdir 'right)
+                    (split-window-vertically)
+                  (split-window-horizontally))
+                (set-window-buffer (windmove-find-other-window neighbour-dir) other-buf))))))))
+
+(global-set-key (kbd "C-x 8") 'window-toggle-split-direction)
+#+END_SRC
+
+** Comments
+#+begin_src emacs-lisp :tangle yes
+(global-set-key (kbd "M-c") 'comment-region)
+(global-set-key (kbd "M-u") 'uncomment-region)
+#+END_SRC
+
+** Cut and paste
+#+begin_src emacs-lisp :tangle yes
+(defun pbcopy ()
+  (interactive)
+  (call-process-region (point) (mark) "pbcopy")
+  (setq deactivate-mark t))
+
+(defun pbpaste ()
+  (interactive)
+  (call-process-region (point) (if mark-active (mark) (point)) "pbpaste" t t))
+
+(defun pbcut ()
+  (interactive)
+  (pbcopy)
+  (delete-region (region-beginning) (region-end)))
+
+(global-set-key (kbd "C-c C-c") 'pbcopy)
+(global-set-key (kbd "C-c C-v") 'pbpaste)
+(global-set-key (kbd "C-c C-x") 'pbcut)
+#+END_SRC
+
+** Fullscreen
+#+begin_src emacs-lisp :tangle yes
+(global-set-key (kbd "C-c C-f") 'toggle-frame-fullscreen)
+#+END_SRC
+** Custom commands
+#+begin_src emacs-lisp :tangle yes
+;; Place custom commands in another file
+(setq custom-file "~/.emacs.d/custom.el")
+(load custom-file 'noerror)
+#+END_SRC
+* Appearance
+** Window
+#+begin_src emacs-lisp :tangle yes
+;; Skip splash screen
+(setq inhibit-startup-message t)
+(setq initial-scratch-message "")
+
+;; Hide menu bars
+(menu-bar-mode -1)
+(toggle-scroll-bar -1)
+(tool-bar-mode -1)
+
+;; Display settings
+(setq mac-allow-anti-aliasing t)
+#+END_SRC
+** Color
+#+begin_src emacs-lisp :tangle yes
+;;(load-file "~/.emacs.d/xterm-color/xterm-color.el")
+(require 'xterm-color)
+(progn (add-hook 'comint-preoutput-filter-functions 'xterm-color-filter)
+       (setq comint-output-filter-functions (remove 'ansi-color-process-output comint-output-filter-functions)))
+#+END_SRC
+
+** Font
+#+begin_src emacs-lisp :tangle yes
+(add-to-list 'default-frame-alist '(font . "Monaco 12"))
+(if (string-equal system-type "darwin")
+    (set-fontset-font "fontset-default"
+                      'unicode
+                      '("Monaco" . "iso10646-1")))
+#+END_SRC
+* Layout windows
+#+begin_src emacs-lisp :tangle yes
+;; Initial window layout
+(when window-system (set-frame-size (selected-frame) 88 45))
+(shell "*shell1*")
+(find-file "~/GoogleDrive/projects.org")
+(split-window-below)
+(other-window 1)
+(org-agenda-list)
+(balance-windows)
+#+END_SRC
