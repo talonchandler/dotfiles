@@ -50,10 +50,10 @@
     ("ad24ea739f229477ea348af968634cb7a0748c9015110a777c8effeddfa920f5" "e7ec0cc3ce134cc0bd420b98573bbd339a908ac24162b8034c98e1ba5ee1f9f6" default)))
  '(org-agenda-files
    (quote
-    ("~/GoogleDrive/capture.org" "~/GoogleDrive/someday.org" "~/GoogleDrive/reference.org" "~/GoogleDrive/projects.org")))
+    ("~/GoogleDrive/capture.org" "~/GoogleDrive/reference.org" "~/GoogleDrive/projects.org")))
  '(package-selected-packages
    (quote
-    (xterm-color cl-lib fill-column-indicator elpy auto-complete)))
+    (mu4e-alert xterm-color cl-lib fill-column-indicator elpy auto-complete)))
  '(send-mail-function (quote mailclient-send-it)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -62,4 +62,15 @@
  ;; If there is more than one, they won't work right.
  '(default ((t (:inherit nil :stipple nil :background "Black" :foreground "light grey" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 1 :width normal :foundry "default" : family "default"))))
  '(dired-flagged ((t (:inherit default))))
- '(dired-marked ((t (:inherit default) fault))))
+ '(dired-marked ((t (:inherit default) fault)))
+ '(fringe ((t (:background "black"))))
+ '(minibuffer-prompt ((t (:foreground "cyan"))))
+ '(mode-line ((t (:background "grey80" :foreground "black" :box (:line-width 1 :color "grey80" :style released-button)))))
+ '(mode-line-highlight ((t nil)))
+ '(mode-line-inactive ((t (:inherit mode-line :background "black" :foreground "grey80" :weight light))))
+ '(mu4e-header-highlight-face ((t (:inherit region :weight bold))))
+ '(mu4e-modeline-face ((t (:inherit mode-line-read-only-face :weight bold))))
+ '(tool-bar ((t (:background "grey75" :foreground "black" :box (:line-width 1 :color "gray3" :style released-button)))))
+ '(window-divider ((t (:foreground "black"))))
+ '(window-divider-first-pixel ((t (:foreground "black"))))
+ '(window-divider-last-pixel ((t (:foreground "black")))))

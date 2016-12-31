@@ -16,7 +16,61 @@
 (setq calendar-longitude -87.6)
 (setq calendar-location-name "Chicago, IL")
 #+END_SRC
+* Email
+#+BEGIN_SRC emacs-lisp :tangle yes
+;; Set Paths
+(require 'mu4e)
+(setq mu4e-maildir "~/Mail")
+(setq mu4e-drafts-folder "/[Gmail].Drafts")
+(setq mu4e-sent-folder "/[Gmail].Sent Mail")
+(setq mu4e-trash-folder "/[Gmail].Trash")
 
+;; Don't save messages to Sent Messages, Gmail/IMAP takes care of this
+(setq mu4e-sent-messages-behavior 'delete)
+
+;; Shortcuts
+(setq mu4e-maildir-shortcuts
+    '( ("/INBOX"               . ?i)
+       ("/[Gmail].Sent Mail"   . ?s)
+       ("/[Gmail].Trash"       . ?t)
+       ("/[Gmail].All Mail"    . ?a)))
+
+;; Allow for updating mail using 'U' in the main view:
+(setq mu4e-get-mail-command "offlineimap")
+
+;; Signature
+(setq
+   user-mail-address "talonchandler@gmail.com"
+   user-full-name  "Talon Chandler"
+   mu4e-compose-signature
+    (concat
+      "Talon Chandler\n"
+      "(312) 978-1901"))
+
+;; Sending mail
+(setq message-send-mail-function 'smtpmail-send-it
+     smtpmail-stream-type 'starttls
+     smtpmail-default-smtp-server "smtp.gmail.com"
+     smtpmail-smtp-server "smtp.gmail.com"
+     smtpmail-smtp-service 587)
+
+;; Auto-retrieve
+(setq
+  mu4e-get-mail-command "offlineimap"
+  mu4e-update-interval 60)             ;; update every minutes
+
+;; Alerts
+(mu4e-alert-enable-notifications)
+(mu4e-alert-set-default-style 'growl)
+
+;; display stuff on modeline as well as notify
+(add-hook 'after-init-hook #'mu4e-alert-enable-notifications)
+;;(add-hook 'after-init-hook #'mu4e-alert-enable-mode-line-display)
+
+;; Keyboard shortcut
+(global-set-key (kbd "C-c m") 'mu4e)
+
+#+END_SRC
 * Backups
 #+begin_src emacs-lisp :tangle yes
 (setq backup-directory-alist `(("." . "~/.saves")))
@@ -37,12 +91,27 @@
 (setq org-log-done 'time)
 
 (setq org-default-notes-file "capture.org")
-(setq org-agenda-files (quote ("capture.org" "someday.org" "reference.org" "projects.org")))
+(setq org-agenda-files (quote ("capture.org" "reference.org" "projects.org")))
 (setq org-archive-location "archive/datetree.org::datetree/* Finished Tasks")
 (setq org-enforce-todo-dependencies t)
 
 (global-set-key (kbd "C-c a") 'org-agenda)
 (global-set-key (kbd "C-c c") 'org-capture)
+
+(defun org-toggle-todo-and-fold ()
+  (interactive)
+  (save-excursion
+    (org-back-to-heading t) ;; Make sure command works even if point is
+                            ;; below target heading
+    (cond ((looking-at "\*+ TODO")
+           (org-todo "DONE")
+           (hide-subtree))
+          ((looking-at "\*+ DONE")
+           (org-todo "TODO")
+           (hide-subtree))
+          (t (message "Can only toggle between TODO and DONE.")))))
+
+(define-key org-mode-map (kbd "C-x C-d") 'org-toggle-todo-and-fold)
 #+END_SRC
 ** Python
 #+begin_src emacs-lisp :tangle yes
@@ -110,6 +179,7 @@
 (add-hook 'LaTeX-mode-hook 'linum-mode)
 (add-hook 'LaTeX-mode-hook 'flyspell-mode)
 (add-hook 'lisp-mode-hook 'linum-mode)
+(add-hook 'org-mode-hook 'org-indent-mode)
 #+END_SRC
 ** Misc 
 #+begin_src emacs-lisp :tangle yes
@@ -210,7 +280,6 @@ i.e. change right window to bottom, or change bottom window to right."
 
 (global-set-key (kbd "C-x 8") 'window-toggle-split-direction)
 #+END_SRC
-
 ** Comments
 #+begin_src emacs-lisp :tangle yes
 (global-set-key (kbd "M-c") 'comment-region)
@@ -269,8 +338,10 @@ i.e. change right window to bottom, or change bottom window to right."
 ;;(require 'xterm-color)
 ;;(progn (add-hook 'comint-preoutput-filter-functions 'xterm-color-filter)
 ;;       (setq comint-output-filter-functions (remove 'ansi-color-process-output comint-output-filter-functions)))
-#+END_SRC
 
+
+
+#+END_SRC
 ** Font
 #+begin_src emacs-lisp :tangle yes
 (add-to-list 'default-frame-alist '(font . "Monaco 12"))
