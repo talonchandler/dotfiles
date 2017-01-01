@@ -231,13 +231,10 @@
 #+END_SRC
 ** Color
 #+begin_src emacs-lisp :tangle yes
-;;(load-file "~/.emacs.d/xterm-color/xterm-color.el")
-;;(require 'xterm-color)
-;;(progn (add-hook 'comint-preoutput-filter-functions 'xterm-color-filter)
-;;       (setq comint-output-filter-functions (remove 'ansi-color-process-output comint-output-filter-functions)))
-
-
-
+(load-file "~/.emacs.d/xterm-color/xterm-color.el")
+(require 'xterm-color)
+(progn (add-hook 'comint-preoutput-filter-functions 'xterm-color-filter)
+       (setq comint-output-filter-functions (remove 'ansi-color-process-output comint-output-filter-functions)))
 #+END_SRC
 ** Font
 #+begin_src emacs-lisp :tangle yes
