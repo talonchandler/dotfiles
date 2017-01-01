@@ -16,71 +16,6 @@
 (setq calendar-longitude -87.6)
 (setq calendar-location-name "Chicago, IL")
 #+END_SRC
-* Email
-#+BEGIN_SRC emacs-lisp :tangle yes
-;; Set Paths
-(require 'mu4e)
-(setq mu4e-maildir "~/Mail")
-(setq mu4e-drafts-folder "/[Gmail].Drafts")
-(setq mu4e-sent-folder "/[Gmail].Sent Mail")
-(setq mu4e-trash-folder "/[Gmail].Trash")
-
-;; Don't save messages to Sent Messages, Gmail/IMAP takes care of this
-(setq mu4e-sent-messages-behavior 'delete)
-
-;; Shortcuts
-(setq mu4e-maildir-shortcuts
-    '( ("/INBOX"               . ?i)
-       ("/[Gmail].Sent Mail"   . ?s)
-       ("/[Gmail].Trash"       . ?t)
-       ("/[Gmail].All Mail"    . ?a)))
-
-;; Allow for updating mail using 'U' in the main view:
-(setq mu4e-get-mail-command "offlineimap")
-
-;; Signature
-(setq
-   user-mail-address "talonchandler@gmail.com"
-   user-full-name  "Talon Chandler"
-   mu4e-compose-signature
-    (concat
-      "Talon Chandler\n"
-      "(312) 978-1901"))
-
-;; Sending mail
-(setq message-send-mail-function 'smtpmail-send-it
-     smtpmail-stream-type 'starttls
-     smtpmail-default-smtp-server "smtp.gmail.com"
-     smtpmail-smtp-server "smtp.gmail.com"
-     smtpmail-smtp-service 587)
-
-;; Auto-retrieve
-(setq
-  mu4e-get-mail-command "offlineimap"
-  mu4e-update-interval 60)             ;; update every minutes
-
-;; Alerts
-(mu4e-alert-enable-notifications)
-(mu4e-alert-set-default-style 'growl)
-
-;; display stuff on modeline as well as notify
-(add-hook 'after-init-hook #'mu4e-alert-enable-notifications)
-;;(add-hook 'after-init-hook #'mu4e-alert-enable-mode-line-display)
-
-;; Keyboard shortcut
-(global-set-key (kbd "C-c m") 'mu4e)
-
-#+END_SRC
-* Backups
-#+begin_src emacs-lisp :tangle yes
-(setq backup-directory-alist `(("." . "~/.saves")))
-(setq backup-by-copying t)
-(setq delete-old-versions t
-      kept-new-versions 6
-      kept-old-versions 2
-      version-control t)
-#+END_SRC
-
 * Modes
 ** Org-mode
 #+begin_src emacs-lisp :tangle yes
@@ -88,6 +23,7 @@
 
 (setq org-todo-keywords
       '((sequence "TODO(t)" "WAITING(w)" "|" "DONE(d)")))
+
 (setq org-log-done 'time)
 
 (setq org-default-notes-file "capture.org")
@@ -98,6 +34,7 @@
 (global-set-key (kbd "C-c a") 'org-agenda)
 (global-set-key (kbd "C-c c") 'org-capture)
 
+;; Org quick done
 (defun org-toggle-todo-and-fold ()
   (interactive)
   (save-excursion
@@ -111,7 +48,7 @@
            (hide-subtree))
           (t (message "Can only toggle between TODO and DONE.")))))
 
-(define-key org-mode-map (kbd "C-x C-d") 'org-toggle-todo-and-fold)
+(global-set-key (kbd "C-x C-d") 'org-toggle-todo-and-fold)
 #+END_SRC
 ** Python
 #+begin_src emacs-lisp :tangle yes
@@ -199,6 +136,116 @@
 ;; gmail to bb
 (add-to-list 'load-path "~/.emacs.d/lisp/")
 (autoload 'gmail2bbdb-import-file "gmail2bbdb" nil t nil)
+#+END_SRC* 
+* Email
+#+BEGIN_SRC emacs-lisp :tangle yes
+;; Set Paths
+(require 'mu4e)
+(setq mu4e-maildir "~/Mail")
+(setq mu4e-drafts-folder "/[Gmail].Drafts")
+(setq mu4e-sent-folder "/[Gmail].Sent Mail")
+(setq mu4e-trash-folder "/[Gmail].Trash")
+
+;; Don't save messages to Sent Messages, Gmail/IMAP takes care of this
+(setq mu4e-sent-messages-behavior 'delete)
+
+;; Shortcuts
+(setq mu4e-maildir-shortcuts
+    '( ("/INBOX"               . ?i)
+       ("/[Gmail].Sent Mail"   . ?s)
+       ("/[Gmail].Trash"       . ?t)
+       ("/[Gmail].All Mail"    . ?a)))
+
+;; Allow for updating mail using 'U' in the main view:
+(setq mu4e-get-mail-command "offlineimap")
+
+;; Signature
+(setq
+   user-mail-address "talonchandler@gmail.com"
+   user-full-name  "Talon Chandler"
+   mu4e-compose-signature
+    (concat
+      "Talon Chandler\n"
+      "(312) 978-1901"))
+
+;; Sending mail
+(setq message-send-mail-function 'smtpmail-send-it
+     smtpmail-stream-type 'starttls
+     smtpmail-default-smtp-server "smtp.gmail.com"
+     smtpmail-smtp-server "smtp.gmail.com"
+     smtpmail-smtp-service 587)
+
+;; Auto-retrieve
+(setq mu4e-get-mail-command "offlineimap")
+(setq mu4e-update-interval 30)
+(setq mu4e-index-cleanup nil)
+(setq mu4e-index-lazy-check t)
+(setq mu4e-hide-index-messages t)
+  
+;; Alerts
+(mu4e-alert-enable-notifications)
+(setq mu4e-alert-interesting-mail-query
+      (concat
+       "flag:unread"
+       " AND NOT flag:trashed"
+       " AND NOT maildir:"
+       "\"/[Gmail].All Mail\""))
+
+(add-hook 'after-init-hook #'mu4e-alert-enable-mode-line-display)
+
+;; Keyboard shortcut
+(global-set-key (kbd "C-c m") 'mu4e)
+
+;; Editing options
+(add-hook 'mu4e-compose-mode-hook
+  (defun my-do-compose-stuff ()
+    "My settings for message composition."
+    (set-fill-column 72)
+    (flyspell-mode)))
+
+#+END_SRC
+* Backups
+#+begin_src emacs-lisp :tangle yes
+(setq backup-directory-alist `(("." . "~/.saves")))
+(setq backup-by-copying t)
+(setq delete-old-versions t
+      kept-new-versions 6
+      kept-old-versions 2
+      version-control t)
+#+END_SRC
+
+* Appearance
+** Window
+#+begin_src emacs-lisp :tangle yes
+;; Skip splash screen
+(setq inhibit-startup-message t)
+(setq initial-scratch-message "")
+
+;; Hide menu bars
+(menu-bar-mode -1)
+(toggle-scroll-bar -1)
+(tool-bar-mode -1)
+
+;; Display settings
+(setq mac-allow-anti-aliasing t)
+#+END_SRC
+** Color
+#+begin_src emacs-lisp :tangle yes
+;;(load-file "~/.emacs.d/xterm-color/xterm-color.el")
+;;(require 'xterm-color)
+;;(progn (add-hook 'comint-preoutput-filter-functions 'xterm-color-filter)
+;;       (setq comint-output-filter-functions (remove 'ansi-color-process-output comint-output-filter-functions)))
+
+
+
+#+END_SRC
+** Font
+#+begin_src emacs-lisp :tangle yes
+(add-to-list 'default-frame-alist '(font . "Monaco 12"))
+(if (string-equal system-type "darwin")
+    (set-fontset-font "fontset-default"
+                      'unicode
+                      '("Monaco" . "iso10646-1")))
 #+END_SRC
 
 * Custom behaviours
@@ -313,42 +360,10 @@ i.e. change right window to bottom, or change bottom window to right."
 #+END_SRC
 ** Custom commands
 #+begin_src emacs-lisp :tangle yes
-;; Place custom commands in another file
-(setq custom-file "~/.emacs.d/custom.el")
-(load custom-file 'noerror)
-#+END_SRC
-* Appearance
-** Window
-#+begin_src emacs-lisp :tangle yes
-;; Skip splash screen
-(setq inhibit-startup-message t)
-(setq initial-scratch-message "")
+  ;; Place custom commands in another file
+  (setq custom-file "~/.emacs.d/custom.el")
+  (load custom-file 'noerror)
 
-;; Hide menu bars
-(menu-bar-mode -1)
-(toggle-scroll-bar -1)
-(tool-bar-mode -1)
-
-;; Display settings
-(setq mac-allow-anti-aliasing t)
-#+END_SRC
-** Color
-#+begin_src emacs-lisp :tangle yes
-;;(load-file "~/.emacs.d/xterm-color/xterm-color.el")
-;;(require 'xterm-color)
-;;(progn (add-hook 'comint-preoutput-filter-functions 'xterm-color-filter)
-;;       (setq comint-output-filter-functions (remove 'ansi-color-process-output comint-output-filter-functions)))
-
-
-
-#+END_SRC
-** Font
-#+begin_src emacs-lisp :tangle yes
-(add-to-list 'default-frame-alist '(font . "Monaco 12"))
-(if (string-equal system-type "darwin")
-    (set-fontset-font "fontset-default"
-                      'unicode
-                      '("Monaco" . "iso10646-1")))
 #+END_SRC
 * Layout windows
 #+begin_src emacs-lisp :tangle yes
@@ -362,4 +377,3 @@ i.e. change right window to bottom, or change bottom window to right."
 (balance-windows)
 (other-window 1)
 #+END_SRC
-  
