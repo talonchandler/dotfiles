@@ -468,4 +468,8 @@ i.e. change right window to bottom, or change bottom window to right."
 (org-agenda-list)
 (balance-windows)
 (other-window 1)
+(kill-buffer "canada.org")
+(kill-buffer "america.org")
+(kill-buffer "journalclub.org")
+(kill-buffer "diary")
 #+END_SRC
