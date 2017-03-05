@@ -460,10 +460,10 @@ i.e. change right window to bottom, or change bottom window to right."
 * Layout windows
 #+begin_src emacs-lisp :tangle yes
 ;; Initial window layout
-(when window-system (set-frame-size (selected-frame) 88 45))
+(when window-system (set-frame-size (selected-frame) 180 48))
 (shell "*shell1*")
 (find-file "~/GoogleDrive/projects.org")
-(split-window-below)
+(split-window-right)
 (other-window 1)
 (org-agenda-list)
 (balance-windows)
