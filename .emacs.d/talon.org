@@ -17,6 +17,12 @@
 (setq calendar-location-name "Chicago, IL")
 #+END_SRC
 * Modes
+** Abbrev
+#+begin_src emacs-lisp :tangle yes
+(setq-default abbrev-mode t)
+(setq abbrev-file-name "~/.emacs.d/abbrev_defs")  
+(setq save-abbrevs 'silently)
+#+END_SRC
 ** Org-mode
 #+begin_src emacs-lisp :tangle yes
 (setq org-directory "/Users/Talon/GoogleDrive/")
@@ -32,7 +38,7 @@
 (setq org-log-done 'time)
 
 (setq org-default-notes-file "capture.org")
-(setq org-agenda-files (quote ("capture.org" "reference.org" "projects.org")))
+(setq org-agenda-files (quote ("capture.org" "reference.org" "projects.org" "calendar/")))
 (setq org-archive-location "archive/datetree.org::datetree/* Finished Tasks")
 (setq org-enforce-todo-dependencies t)
 (setq org-agenda-include-diary t) ;; Read sexp diary entries
@@ -63,6 +69,9 @@
 #+begin_src emacs-lisp :tangle yes
 ;;(elpy-enable)
 ;;(elpy-use-ipython)
+
+(setq python-shell-interpreter "python3")
+
 (global-set-key (kbd "C-c C-r") 'python-shell-send-region)
 (global-set-key (kbd "C-t") 'transpose-chars)
 #+END_SRC
@@ -336,6 +345,49 @@
 #+begin_src emacs-lisp :tangle yes
  (global-set-key (kbd "C-x l") 'previous-buffer)
  (global-set-key (kbd "C-x ;") 'next-buffer)
+#+END_SRC
+** Next/previous window
+#+begin_src emacs-lisp :tangle yes
+(global-set-key (kbd "C-x <up>") 'windmove-up)
+(global-set-key (kbd "C-x <down>") 'windmove-down)
+(global-set-key (kbd "C-x <right>") 'windmove-right)
+(global-set-key (kbd "C-x <left>") 'windmove-left)
+#+END_SRC
+** Skippable buffers
+#+begin_src emacs-lisp :tangle yes
+(setq skippable-buffers '("*Messages*" "*scratch*" "*Help*" "*Completions*" "Calendar" "*info*"))
+
+(defun my-next-buffer ()
+  "next-buffer that skips certain buffers"
+  (interactive)
+  (next-buffer)
+  (while (member (buffer-name) skippable-buffers)
+    (next-buffer)))
+
+(defun my-previous-buffer ()
+  "previous-buffer that skips certain buffers"
+  (interactive)
+  (previous-buffer)
+  (while (member (buffer-name) skippable-buffers)
+    (previous-buffer)))
+
+(global-set-key [remap next-buffer] 'my-next-buffer)
+(global-set-key [remap previous-buffer] 'my-previous-buffer)
+#+END_SRC
+** Switch to new window
+#+begin_src emacs-lisp :tangle yes
+(defun new-window-below-and-switch ()
+  (interactive)
+  (split-window-below)
+  (other-window 1))
+
+(defun new-window-right-and-switch ()
+  (interactive)
+  (split-window-right)
+  (other-window 1))
+
+(global-set-key (kbd "C-x 2") 'new-window-below-and-switch)
+(global-set-key (kbd "C-x 3") 'new-window-right-and-switch)
 #+END_SRC
 ** Flip window orientation
 #+begin_src emacs-lisp :tangle yes
