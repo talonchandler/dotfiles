@@ -1,5 +1,4 @@
 # Prompt
-#PS1="\[\e[1;31m\][\u@\h]\[\e[0m\] \[\e[1;35m\]\w\[\e[0m\]\n\[\e[0;37m\]\t $ \[\e[0m\]"
 PS1="\[\e[91m\][\u@\h]\[\e[0m\] \[\e[95m\]\w\[\e[31m\]\n\[\e[96m\]\t $ \[\e[0m\]"
 
 # CMD+TAB will switch spaces
@@ -14,14 +13,9 @@ export PATH=/usr/local/bin:$PATH
 alias school='cd ~/GoogleDrive/School/Current'
 alias website='ftp tchandler1@50.62.160.27'
 alias ttop='top -R -F -s 10 -o rsize'
-alias hw='cp -n ~/GoogleDrive/Templates/hw.tex ./solution.tex;cp ~/Google\ Drive/Templates/mcode.sty ./mcode.sty;ls'
 alias medphys='ssh -X talonchandler@shmi.bsd.uchicago.edu'
 alias midway='ssh -X talonchandler@midway.rcc.uchicago.edu'
 alias siraf='ssh -X talonchandler@siraf-login.bsd.uchicago.edu'
-alias pw='emacs ~/GoogleDrive/Personal/ID/passwords.gpg'
-#alias emacs='emacs &'
-alias python='python3'
-alias wolfram='/Applications/Mathematica.app/Contents/MacOS/MathKernel'
 
 # Setting colour scheme 
 export CLICOLOR=1 # turns on file color

@@ -170,6 +170,11 @@
 (setq mm-text-html-renderer 'w3m)
 (setq org-return-follows-link 't)
 #+END_SRC
+* Not much
+#+BEGIN_SRC emacs-lisp :tangle yes
+(autoload 'notmuch "notmuch" "notmuch mail" t)
+(require 'notmuch)
+#+END_SRC
 * Email
 #+BEGIN_SRC emacs-lisp :tangle yes
 ;; Set Paths
