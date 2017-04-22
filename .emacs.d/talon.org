@@ -25,46 +25,58 @@
 #+END_SRC
 ** Org-mode
 #+begin_src emacs-lisp :tangle yes
-(setq org-directory "/Users/Talon/GoogleDrive/")
+  (setq org-directory "/Users/Talon/GoogleDrive/")
 
-(setq org-todo-keywords
-      '((sequence "TODO(t)" "WAITING(w)" "|" "DONE(d)")))
+  (setq org-todo-keywords
+        '((sequence "TODO(t)" "STARTED(s)" "WAITING(w)" "|" "CANCELED(c)" "DONE(d)")))
 
-(setq org-tag-alist '((:startgroup . nil)
-                     ("@work" . ?w) ("@home" . ?h) ("errand" . ?e)
-                     (:endgroup .nil)))
-(setq org-tags-column -85)
-    
-(setq org-log-done 'time)
+  (setq org-todo-keyword-faces
+             '(("TODO" . "pink") 
+               ("STARTED" . "yellow")
+               ("WAITING" . "orange")
+               ("CANCELED" . "red")
+               ("DONE" . "green")))
 
-(setq org-default-notes-file "capture.org")
-(setq org-agenda-files (quote ("capture.org" "reference.org" "projects.org" "calendar/")))
-(setq org-archive-location "archive/datetree.org::datetree/* Finished Tasks")
-(setq org-enforce-todo-dependencies t)
-(setq org-agenda-include-diary t) ;; Read sexp diary entries
+  (setq org-tag-alist '((:startgroup . nil)
+                       ("@work" . ?w) ("@home" . ?h) ("errand" . ?e)
+                       (:endgroup .nil)))
+  (setq org-tags-column -85)
+      
+  (setq org-log-done 'time)
 
+  (setq org-default-notes-file "capture.org")
+  (setq org-agenda-files (quote ("capture.org" "reference.org" "projects.org" "calendar/")))
+  (setq org-archive-location "archive/datetree.org::datetree/* Finished Tasks")
+  (setq org-enforce-todo-dependencies t)
+  (setq org-agenda-include-diary t) ;; Read sexp diary entries
 
+  (global-set-key (kbd "C-c a") 'org-agenda)
+  (global-set-key (kbd "C-c c") 'org-capture)
 
-(global-set-key (kbd "C-c a") 'org-agenda)
-(global-set-key (kbd "C-c c") 'org-capture)
+  ;; Save window views
+  (setq org-agenda-restore-windows-after-quit t)
 
+  ;; Org quick done and archive
+  (defun org-toggle-todo-and-fold ()
+    (interactive)
+    (save-excursion
+      (org-back-to-heading t) ;; Make sure command works even if point is
+                              ;; below target heading
+      (cond ((looking-at "\*+ TODO")
+             (org-todo "DONE")
+             (hide-subtree))
+            ((looking-at "\*+ DONE")
+             (org-todo "TODO")
+             (hide-subtree))
+            (t (message "Can only toggle between TODO and DONE.")))))
 
-;; Org quick done
-(defun org-toggle-todo-and-fold ()
-  (interactive)
-  (save-excursion
-    (org-back-to-heading t) ;; Make sure command works even if point is
-                            ;; below target heading
-    (cond ((looking-at "\*+ TODO")
-           (org-todo "DONE")
-           (hide-subtree))
-          ((looking-at "\*+ DONE")
-           (org-todo "TODO")
-           (hide-subtree))
-          (t (message "Can only toggle between TODO and DONE.")))))
-
-(global-set-key (kbd "C-x C-d") 'org-toggle-todo-and-fold)
+  (global-set-key (kbd "C-x C-d") 'org-toggle-todo-and-fold)
 #+END_SRC
+** Magit
+#+begin_src emacs-lisp :tangle yes
+(global-set-key (kbd "C-x g") 'magit-status)
+(global-set-key (kbd "C-x M-g") 'magit-dispatch-popup)
+#+end_src
 ** Python
 #+begin_src emacs-lisp :tangle yes
 ;;(elpy-enable)
