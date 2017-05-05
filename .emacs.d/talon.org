@@ -71,6 +71,9 @@
             (t (message "Can only toggle between TODO and DONE.")))))
 
   (global-set-key (kbd "C-x C-d") 'org-toggle-todo-and-fold)
+
+;; Org export
+(setq org-export-dispatch-use-expert-ui 't)
 #+END_SRC
 ** Magit
 #+begin_src emacs-lisp :tangle yes
