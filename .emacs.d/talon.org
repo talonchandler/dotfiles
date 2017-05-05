@@ -86,6 +86,7 @@
 ;;(elpy-use-ipython)
 
 (setq python-shell-interpreter "python3")
+(setq python-shell-interpreter "/usr/local/bin/python3")
 
 (global-set-key (kbd "C-c C-r") 'python-shell-send-region)
 (global-set-key (kbd "C-t") 'transpose-chars)
