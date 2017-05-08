@@ -5,8 +5,6 @@ PS1="\[\e[91m\][\u@\h]\[\e[0m\] \[\e[95m\]\w\[\e[31m\]\n\[\e[96m\]\t $ \[\e[0m\]
 defaults write com.apple.Dock workspaces-auto-swoosh -bool YES && killall Dock
 
 # Add paths
-PATH="/Library/Frameworks/Python.framework/Versions/2.7/bin:${PATH}"
-export PATH
 export PATH=/usr/local/bin:$PATH
 
 # Alias
