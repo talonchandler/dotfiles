@@ -17,12 +17,6 @@
 (setq calendar-location-name "Chicago, IL")
 #+END_SRC
 * Modes
-** Abbrev
-#+begin_src emacs-lisp :tangle yes
-(setq-default abbrev-mode t)
-(setq abbrev-file-name "~/.emacs.d/abbrev_defs")  
-(setq save-abbrevs 'silently)
-#+END_SRC
 ** Org-mode
 #+begin_src emacs-lisp :tangle yes
   (setq org-directory "/Users/Talon/GoogleDrive/")
@@ -484,8 +478,6 @@ i.e. change right window to bottom, or change bottom window to right."
 (when window-system (set-frame-size (selected-frame) 180 48))
 (shell "*shell1*")
 (find-file "~/GoogleDrive/projects.org")
-(split-window-right)
-(other-window 1)
 (org-agenda-list)
 (balance-windows)
 (other-window 1)
