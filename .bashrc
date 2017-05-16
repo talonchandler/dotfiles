@@ -4,7 +4,7 @@ PS1="\[\e[91m\][\u@\h]\[\e[0m\] \[\e[95m\]\w\[\e[31m\]\n\[\e[96m\]\t $ \[\e[0m\]
 # CMD+TAB will switch spaces
 defaults write com.apple.Dock workspaces-auto-swoosh -bool YES && killall Dock
 
-# Add paths
+# Add brew paths
 export PATH=/usr/local/bin:$PATH
 
 # Alias
@@ -23,3 +23,4 @@ export TERM="xterm-256color" # not useful as far as I can tell
 # For cask
 export HOMEBREW_CASK_OPTS="--appdir=~/Applications --caskroom=/opt/homebrew-cask/Caskroom"
 source /usr/local/opt/nvm/nvm.sh
+

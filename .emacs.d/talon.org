@@ -25,7 +25,7 @@
         '((sequence "TODO(t)" "STARTED(s)" "WAITING(w)" "|" "CANCELED(c)" "DONE(d)")))
 
   (setq org-todo-keyword-faces
-             '(("TODO" . "pink") 
+             '(("TODO" . "pink")
                ("STARTED" . "yellow")
                ("WAITING" . "orange")
                ("CANCELED" . "red")
@@ -35,7 +35,7 @@
                        ("@work" . ?w) ("@home" . ?h) ("errand" . ?e)
                        (:endgroup .nil)))
   (setq org-tags-column -85)
-      
+
   (setq org-log-done 'time)
 
   (setq org-default-notes-file "capture.org")
@@ -68,6 +68,8 @@
 
 ;; Org export
 (setq org-export-dispatch-use-expert-ui 't)
+
+(require 'org-mu4e)
 #+END_SRC
 ** Magit
 #+begin_src emacs-lisp :tangle yes
@@ -108,7 +110,7 @@
 (add-to-list 'auto-mode-alist '("\\.asy$" . asy-mode))
 #+END_SRC
 
-** Shell 
+** Shell
 #+begin_src emacs-lisp :tangle yes
 ;; Shell load .bash_profile
 (setenv "PATH" (shell-command-to-string "source ~/.bash_rc; echo -n $PATH"))
@@ -119,7 +121,7 @@
 #+begin_src emacs-lisp :tangle yes
 (setq doc-view-resolution 300)
 #+END_SRC
-** Fill column indicator 
+** Fill column indicator
 #+begin_src emacs-lisp :tangle yes
 (require 'fill-column-indicator)
 (setq fci-rule-color "white")
@@ -161,7 +163,7 @@
 (add-hook 'lisp-mode-hook 'linum-mode)
 (add-hook 'org-mode-hook 'org-indent-mode)
 #+END_SRC
-** Ido 
+** Ido
 #+begin_src emacs-lisp :tangle yes
 ;; Use ido
 (require 'ido)
@@ -180,23 +182,32 @@
 (setq mm-text-html-renderer 'w3m)
 (setq org-return-follows-link 't)
 #+END_SRC
-* Not much
-#+BEGIN_SRC emacs-lisp :tangle yes
-(autoload 'notmuch "notmuch" "notmuch mail" t)
-(require 'notmuch)
-#+END_SRC
 * Email
+** Receive mail
 #+BEGIN_SRC emacs-lisp :tangle yes
-;; Set Paths
+;; Set paths
 (require 'mu4e)
 (setq mu4e-maildir "~/Mail")
 (setq mu4e-drafts-folder "/[Gmail].Drafts")
 (setq mu4e-sent-folder "/[Gmail].Sent Mail")
-(setq mu4e-trash-folder "/[Gmail].Trash")
 
 ;; Don't save messages to Sent Messages, Gmail/IMAP takes care of this
 (setq mu4e-sent-messages-behavior 'delete)
 
+;; Updating
+(setq mu4e-get-mail-command "mbsync gmail")
+
+;; Auto-retrieve
+(setq mu4e-update-interval 10)
+(setq mu4e-index-cleanup nil)
+(setq mu4e-index-lazy-check t)
+(setq mu4e-hide-index-messages t)
+
+;; Patch for changing UIDs
+(setq mu4e-change-filenames-when-moving t)
+#+END_SRC
+** Process mail
+#+BEGIN_SRC emacs-lisp :tangle yes
 ;; Shortcuts
 (setq mu4e-maildir-shortcuts
     '( ("/INBOX"               . ?i)
@@ -204,9 +215,40 @@
        ("/[Gmail].Trash"       . ?t)
        ("/[Gmail].All Mail"    . ?a)))
 
-;; Allow for updating mail using 'U' in the main view:
-(setq mu4e-get-mail-command "offlineimap")
+;; Refile to
+(setq mu4e-refile-folder "/[Gmail].All Mail")
+(setq mu4e-headers-results-limit '500)
+#+END_SRC
+** Send mail
+#+BEGIN_SRC emacs-lisp :tangle yes
+(require 'smtpmail)
+(setq message-send-mail-function 'smtpmail-send-it
+   starttls-use-gnutls t
+   smtpmail-starttls-credentials '(("smtp.gmail.com" 587 nil nil))
+   smtpmail-auth-credentials
+     '(("smtp.gmail.com" 587 "talonchandler@gmail.com" nil))
+   smtpmail-default-smtp-server "smtp.gmail.com"
+   smtpmail-smtp-server "smtp.gmail.com"
+   smtpmail-smtp-service 587)
+#+END_SRC
+** Alerts
+#+BEGIN_SRC emacs-lisp :tangle yes
+(mu4e-alert-enable-notifications)
+(load-file "~/.emacs.d/vip.el")
+(add-hook 'after-init-hook #'mu4e-alert-enable-mode-line-display)
+(setq mu4e-alert-email-notification-types '(count))
 
+(defun my-mu4e-alert-mode-line-formatter (mail-count)
+  (when (not (zerop mail-count))
+    (concat " "
+            (if (zerop mail-count)
+                " "
+              (format "[%d UNREAD]" mail-count)))))
+
+(setq mu4e-alert-modeline-formatter 'my-mu4e-alert-mode-line-formatter)
+#+END_SRC
+** Personal settings
+#+BEGIN_SRC emacs-lisp :tangle yes
 ;; Signature
 (setq
    user-mail-address "talonchandler@gmail.com"
@@ -216,41 +258,41 @@
       "Talon Chandler\n"
       "(312) 978-1901"))
 
-;; Sending mail
-(setq message-send-mail-function 'smtpmail-send-it
-     smtpmail-stream-type 'starttls
-     smtpmail-default-smtp-server "smtp.gmail.com"
-     smtpmail-smtp-server "smtp.gmail.com"
-     smtpmail-smtp-service 587)
+;; Which email addresses are mine
+(setq mu4e-user-mail-address-list
+'("talonchandler@gmail.com"
+  "talonchandler@talonchandler.com"
+  "talonchandler@uchicago.edu"))
 
-;; Auto-retrieve
-(setq mu4e-get-mail-command "offlineimap")
-(setq mu4e-update-interval 30)
-(setq mu4e-index-cleanup nil)
-(setq mu4e-index-lazy-check t)
-(setq mu4e-hide-index-messages t)
-  
-;; Alerts
-(mu4e-alert-enable-notifications)
-(setq mu4e-alert-interesting-mail-query
-      (concat
-       "flag:unread"
-       " AND NOT flag:trashed"
-       " AND NOT maildir:"
-       "\"/[Gmail].All Mail\""))
+;; Choose headers
+(setq mu4e-headers-fields
+'((:human-date . 10)
+ (:flags . 4)
+ (:from-or-to . 24)
+ (:subject . 34)
+ (:mailing-list . 10)))
 
-(add-hook 'after-init-hook #'mu4e-alert-enable-mode-line-display)
+;; Startup shortcut
+(defun my-mu4e-startup-shortcut ()
+    (interactive)
+    (mu4e~headers-jump-to-maildir "/INBOX"))
 
-;; Keyboard shortcut
-(global-set-key (kbd "C-c m") 'mu4e)
+(global-set-key (kbd "C-c m") 'my-mu4e-startup-shortcut)
 
-;; Editing options
+;; Execute all marks without confirmation.
+(defun my-mu4e-mark-execute-all-no-confirm ()
+   (interactive)
+   (mu4e-mark-execute-all 'no-confirm))
+(define-key mu4e-headers-mode-map "x" #'my-mu4e-mark-execute-all-no-confirm)
+
+;; Display
+(setq shr-color-visible-luminance-min 100)
+
+;; Turn on spell check and fill column
 (add-hook 'mu4e-compose-mode-hook
   (defun my-do-compose-stuff ()
-    "My settings for message composition."
     (set-fill-column 72)
     (flyspell-mode)))
-
 #+END_SRC
 * Backups
 #+begin_src emacs-lisp :tangle yes
@@ -477,6 +519,7 @@ i.e. change right window to bottom, or change bottom window to right."
 ;; Initial window layout
 (when window-system (set-frame-size (selected-frame) 180 48))
 (shell "*shell1*")
+(find-file "~/.emacs.d/talon.org")
 (find-file "~/GoogleDrive/projects.org")
 (org-agenda-list)
 (balance-windows)
