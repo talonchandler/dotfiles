@@ -5,7 +5,8 @@ PS1="\[\e[91m\][\u@\h]\[\e[0m\] \[\e[95m\]\w\[\e[31m\]\n\[\e[96m\]\t $ \[\e[0m\]
 defaults write com.apple.Dock workspaces-auto-swoosh -bool YES && killall Dock
 
 # Add brew paths
-export PATH=/usr/local/bin:$PATH
+export PATH="/usr/local/sbin:$PATH"
+#export PATH=/usr/local/bin:$PATH
 
 # Alias
 alias school='cd ~/GoogleDrive/School/Current'
