@@ -22,7 +22,6 @@
 ;; Set paths
 (require 'mu4e)
 (setq mu4e-maildir "~/Mail")
-(setq mu4e-drafts-folder "/[Gmail].Drafts")
 (setq mu4e-sent-folder "/[Gmail].Sent Mail")
 
 ;; Don't save messages to Sent Messages, Gmail/IMAP takes care of this
@@ -47,7 +46,6 @@
     '( ("/INBOX"               . ?i)
        ("/[Gmail].Sent Mail"   . ?s)
        ("/[Gmail].Trash"       . ?t)
-       ("/[Gmail].Drafts"      . ?d)
        ("/[Gmail].All Mail"    . ?a)))
 
 ;; Refile to
@@ -165,6 +163,7 @@
 
   (global-set-key (kbd "C-c a") 'org-agenda)
   (global-set-key (kbd "C-c c") 'org-capture)
+  (global-set-key (kbd "C-c s") 'org-store-link)
 
   ;; Save window views
   (setq org-agenda-restore-windows-after-quit t)
