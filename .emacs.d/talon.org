@@ -28,11 +28,11 @@
 ;; Don't save messages to Sent Messages, Gmail/IMAP takes care of this
 (setq mu4e-sent-messages-behavior 'delete)
 
-;; Updating
-(setq mu4e-get-mail-command "mbsync gmail")
+;; Updating with crontab
+(setq mu4e-get-mail-command "true")
 
 ;; Auto-retrieve
-(setq mu4e-update-interval 10)
+(setq mu4e-update-interval 30)
 (setq mu4e-index-cleanup nil)
 (setq mu4e-index-lazy-check t)
 (setq mu4e-hide-index-messages t)
@@ -47,6 +47,7 @@
     '( ("/INBOX"               . ?i)
        ("/[Gmail].Sent Mail"   . ?s)
        ("/[Gmail].Trash"       . ?t)
+       ("/[Gmail].Drafts"      . ?d)
        ("/[Gmail].All Mail"    . ?a)))
 
 ;; Refile to
@@ -81,6 +82,11 @@
               (format "[%d UNREAD]" mail-count)))))
 
 (setq mu4e-alert-modeline-formatter 'my-mu4e-alert-mode-line-formatter)
+
+;;(mu4e-alert-set-default-style 'libnotify)
+;;(add-hook 'after-init-hook #'mu4e-alert-enable-notifications)
+;;(alert-add-rule :category "mu4e-alert" :style 'fringe :predicate (lambda (_) (string-match-p "^mu4e-" (symbol-name major-mode))) :continue t)
+(mu4e-alert-enable-notifications)
 #+END_SRC
 ** Personal settings
 #+BEGIN_SRC emacs-lisp :tangle yes
@@ -122,8 +128,8 @@
     (set-fill-column 72)
     (flyspell-mode)))
 
-;; Don't ask to quit
-(setq mu4e-confirm-quit nil)
+;; Ask to quit
+(setq mu4e-confirm-quit t)
 #+END_SRC
 ** Shortcut
 #+BEGIN_SRC emacs-lisp :tangle yes
@@ -332,6 +338,11 @@
                       '("Monaco" . "iso10646-1")))
 #+END_SRC
 * Custom behaviours
+** Display help in current window
+#+begin_src emacs-lisp :tangle yes
+(add-to-list 'display-buffer-alist
+             '("*Help*" display-buffer-same-window))
+#+END_SRC
 ** Intuitive text marking
 #+begin_src emacs-lisp :tangle yes
 (delete-selection-mode t) ;; Deletes selection when you start typing
@@ -533,5 +544,5 @@ i.e. change right window to bottom, or change bottom window to right."
 (kill-buffer "america.org")
 (kill-buffer "journalclub.org")
 (kill-buffer "diary")
-;;(kill-buffer "datetree.org")
 #+END_SRC
+
