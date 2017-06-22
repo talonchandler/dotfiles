@@ -27,11 +27,11 @@
 ;; Don't save messages to Sent Messages, Gmail/IMAP takes care of this
 (setq mu4e-sent-messages-behavior 'delete)
 
-;; Updating with crontab
+;; Updating with crontab but just in case
 (setq mu4e-get-mail-command "true")
 
 ;; Auto-retrieve
-(setq mu4e-update-interval 30)
+(setq mu4e-update-interval 15)
 (setq mu4e-index-cleanup nil)
 (setq mu4e-index-lazy-check t)
 (setq mu4e-hide-index-messages t)
@@ -51,6 +51,10 @@
 ;; Refile to
 (setq mu4e-refile-folder "/[Gmail].All Mail")
 (setq mu4e-headers-results-limit '500)
+
+;; View html 
+(setq mu4e-html2text-command "w3m -T text/html")
+;;(setq mu4e-html2text-command 'mu4e-shr2text)
 #+END_SRC
 ** Send mail
 #+BEGIN_SRC emacs-lisp :tangle yes
@@ -81,7 +85,7 @@
 
 (setq mu4e-alert-modeline-formatter 'my-mu4e-alert-mode-line-formatter)
 
-;;(mu4e-alert-set-default-style 'libnotify)
+;;(mu4e-alert-set-default-style 'growl)
 ;;(add-hook 'after-init-hook #'mu4e-alert-enable-notifications)
 ;;(alert-add-rule :category "mu4e-alert" :style 'fringe :predicate (lambda (_) (string-match-p "^mu4e-" (symbol-name major-mode))) :continue t)
 (mu4e-alert-enable-notifications)
@@ -160,6 +164,7 @@
   (setq org-archive-location "archive/datetree.org::datetree/* Finished Tasks")
   (setq org-enforce-todo-dependencies t)
   (setq org-agenda-include-diary t) ;; Read sexp diary entries
+  (setq org-deadline-warning-days 7)
 
   (global-set-key (kbd "C-c a") 'org-agenda)
   (global-set-key (kbd "C-c c") 'org-capture)
@@ -193,6 +198,20 @@
 #+begin_src emacs-lisp :tangle yes
 (global-set-key (kbd "C-x g") 'magit-status)
 (global-set-key (kbd "C-x M-g") 'magit-dispatch-popup)
+
+;; Diplay magit status in current window
+(setq magit-display-buffer-function
+      (lambda (buffer)
+        (display-buffer
+         buffer (if (and (derived-mode-p 'magit-mode)
+                         (memq (with-current-buffer buffer major-mode)
+                               '(magit-process-mode
+                                 magit-revision-mode
+                                 magit-diff-mode
+                                 magit-stash-mode
+                                 magit-status-mode)))
+                    nil
+                  '(display-buffer-same-window)))))
 #+end_src
 ** Python
 #+begin_src emacs-lisp :tangle yes
@@ -295,6 +314,10 @@
 ;; Read html
 (setq mm-text-html-renderer 'w3m)
 (setq org-return-follows-link 't)
+
+;; Forecast mode
+(setq forecast-api-key "121b71783a9f4be5f28dde08f968a1c1")
+(setq forecast-units "us")
 #+END_SRC
 * Backups
 #+begin_src emacs-lisp :tangle yes

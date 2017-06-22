@@ -6,6 +6,10 @@ defaults write com.apple.Dock workspaces-auto-swoosh -bool YES && killall Dock
 
 # Add brew paths
 export PATH="/usr/local/sbin:$PATH"
+
+# Ruby 
+export PATH="/usr/local/opt/ruby@2.1/bin:$PATH"
+export PATH="/usr/local/lib/ruby/gems/2.1.0/bin/:$PATH"
 #export PATH=/usr/local/bin:$PATH
 
 # Alias
