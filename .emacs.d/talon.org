@@ -32,6 +32,7 @@
 
 ;; Auto-retrieve
 (setq mu4e-update-interval 15)
+
 (setq mu4e-index-cleanup nil)
 (setq mu4e-index-lazy-check t)
 (setq mu4e-hide-index-messages t)
@@ -138,6 +139,8 @@
 (global-set-key (kbd "C-c m") 'mu4e)
 #+END_SRC
 * Modes
+** Bibtex
+(setq bibtex-maintain-sorted-entries 't)
 ** Org-mode
 #+begin_src emacs-lisp :tangle yes
   (setq org-directory "/Users/Talon/GoogleDrive/")
@@ -164,9 +167,10 @@
   (setq org-archive-location "archive/datetree.org::datetree/* Finished Tasks")
   (setq org-enforce-todo-dependencies t)
   (setq org-agenda-include-diary t) ;; Read sexp diary entries
+  (setq org-agenda-window-setup "current-window")
   (setq org-deadline-warning-days 7)
 
-  (global-set-key (kbd "C-c a") 'org-agenda)
+  (global-set-key (kbd "C-c a") 'org-agenda-list)
   (global-set-key (kbd "C-c c") 'org-capture)
   (global-set-key (kbd "C-c s") 'org-store-link)
 
@@ -258,6 +262,22 @@
 #+begin_src emacs-lisp :tangle yes
 (setq doc-view-resolution 300)
 #+END_SRC
+** pdf-tools
+#+begin_src emacs-lisp :tangle yes
+;;; Install epdfinfo via 'brew install pdf-tools' and then install the
+;;; pdf-tools elisp via the use-package below. To upgrade the epdfinfo
+;;; server, just do 'brew upgrade pdf-tools' prior to upgrading to newest
+;;; pdf-tools package using Emacs package system. If things get messed
+;;; up, just do 'brew uninstall pdf-tools', wipe out the elpa
+;;; pdf-tools package and reinstall both as at the start.
+;(use-package pdf-tools
+;  :ensure t
+;  :config
+;  (custom-set-variables
+;    '(pdf-tools-handle-upgrades nil)) ; Use brew upgrade pdf-tools instead.
+;  (setq pdf-info-epdfinfo-program "/usr/local/bin/epdfinfo"))
+(pdf-tools-install)
+#+END_SRC
 ** Fill column indicator
 #+begin_src emacs-lisp :tangle yes
 (require 'fill-column-indicator)
@@ -305,6 +325,7 @@
 (setq ido-everywhere t)
 (setq ido-use-filename-at-point 'guess)
 (setq ido-file-extensions-order '(".org" ".txt" ".py"))
+(setq ido-max-window-height 1)
 #+END_SRC
 ** Misc
 #+begin_src emacs-lisp :tangle yes
@@ -339,6 +360,7 @@
 ;; Hide menu bars
 (menu-bar-mode -1)
 (toggle-scroll-bar -1)
+(scroll-bar-mode -1)
 (tool-bar-mode -1)
 
 ;; Display settings
@@ -358,6 +380,9 @@
     (set-fontset-font "fontset-default"
                       'unicode
                       '("Monaco" . "iso10646-1")))
+
+(setq frame-resize-pixelwise 'true)
+(setq line-spacing 0)
 #+END_SRC
 * Custom behaviours
 ** Display help in current window
@@ -567,4 +592,25 @@ i.e. change right window to bottom, or change bottom window to right."
 (kill-buffer "journalclub.org")
 (kill-buffer "diary")
 #+END_SRC
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

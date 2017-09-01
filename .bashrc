@@ -29,3 +29,5 @@ export TERM="xterm-256color" # not useful as far as I can tell
 export HOMEBREW_CASK_OPTS="--appdir=~/Applications --caskroom=/opt/homebrew-cask/Caskroom"
 source /usr/local/opt/nvm/nvm.sh
 
+# For pdf-tools
+export PKG_CONFIG_PATH=/usr/local/Cellar/zlib/1.2.11/lib/pkgconfig:/usr/local/lib/pkgconfig:/opt/X11/lib/pkgconfig
