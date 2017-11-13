@@ -26,7 +26,7 @@ export LSCOLORS=ExFxCxDxBxEGEDABAGACAD # lightens file colors
 export TERM="xterm-256color" # not useful as far as I can tell
 
 # For cask
-export HOMEBREW_CASK_OPTS="--appdir=~/Applications --caskroom=/opt/homebrew-cask/Caskroom"
+export HOMEBREW_CASK_OPTS="--appdir=~/Applications"
 source /usr/local/opt/nvm/nvm.sh
 
 # For pdf-tools
