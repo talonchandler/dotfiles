@@ -25,7 +25,7 @@
 (setq mu4e-sent-folder "/[Gmail].Sent Mail")
 
 ;; Don't save messages to Sent Messages, Gmail/IMAP takes care of this
-(setq mu4e-sent-messages-behavior 'delete)
+;;(setq mu4e-sent-messages-behavior 'delete)
 
 ;; Updating with crontab but just in case
 (setq mu4e-get-mail-command "true")
@@ -244,7 +244,7 @@
 
 ** Asymptote
 #+begin_src emacs-lisp :tangle yes
-(add-to-list 'load-path "/usr/local/texlive/2015/texmf-dist/asymptote")
+(add-to-list 'load-path "/usr/local/texlive/2017/texmf-dist/asymptote")
 (autoload 'asy-mode "asy-mode.el" "Asymptote major mode." t)
 (autoload 'lasy-mode "asy-mode.el" "hybrid Asymptote/Latex major mode." t)
 (autoload 'asy-insinuate-latex "asy-mode.el" "Asymptote insinuate LaTeX." t)
@@ -276,7 +276,7 @@
 ;  (custom-set-variables
 ;    '(pdf-tools-handle-upgrades nil)) ; Use brew upgrade pdf-tools instead.
 ;  (setq pdf-info-epdfinfo-program "/usr/local/bin/epdfinfo"))
-(pdf-tools-install)
+;(pdf-tools-install)
 #+END_SRC
 ** Fill column indicator
 #+begin_src emacs-lisp :tangle yes
@@ -506,30 +506,30 @@
   "Switch window split from horizontally to vertically, or vice versa.
 
 i.e. change right window to bottom, or change bottom window to right."
-  (interactive)
-  (require 'windmove)
-  (let ((done))
-    (dolist (dirs '((right . down) (down . right)))
-      (unless done
-        (let* ((win (selected-window))
-               (nextdir (car dirs))
-               (neighbour-dir (cdr dirs))
-               (next-win (windmove-find-other-window nextdir win))
-               (neighbour1 (windmove-find-other-window neighbour-dir win))
-               (neighbour2 (if next-win (with-selected-window next-win
-                                          (windmove-find-other-window neighbour-dir next-win)))))
-          ;;(message "win: %s\nnext-win: %s\nneighbour1: %s\nneighbour2:%s" win next-win neighbour1 neighbour2)
-          (setq done (and (eq neighbour1 neighbour2)
-                          (not (eq (minibuffer-window) next-win))))
-          (if done
-              (let* ((other-buf (window-buffer next-win)))
-                (delete-window next-win)
-                (if (eq nextdir 'right)
-                    (split-window-vertically)
-                  (split-window-horizontally))
-                (set-window-buffer (windmove-find-other-window neighbour-dir) other-buf))))))))
+   (interactive)
+   (require 'windmove)
+   (let ((done))
+     (dolist (dirs '((right . down) (down . right)))
+       (unless done
+         (let* ((win (selected-window))
+                (nextdir (car dirs))
+                (neighbour-dir (cdr dirs))
+                (next-win (windmove-find-other-window nextdir win))
+                (neighbour1 (windmove-find-other-window neighbour-dir win))
+                (neighbour2 (if next-win (with-selected-window next-win
+                                           (windmove-find-other-window neighbour-dir next-win)))))
+           ;;(message "win: %s\nnext-win: %s\nneighbour1: %s\nneighbour2:%s" win next-win neighbour1 neighbour2)
+           (setq done (and (eq neighbour1 neighbour2)
+                           (not (eq (minibuffer-window) next-win))))
+           (if done
+               (let* ((other-buf (window-buffer next-win)))
+                 (delete-window next-win)
+                 (if (eq nextdir 'right)
+                     (split-window-vertically)
+                   (split-window-horizontally))
+                 (set-window-buffer (windmove-find-other-window neighbour-dir) other-buf))))))))
 
-(global-set-key (kbd "C-x 8") 'window-toggle-split-direction)
+ (global-set-key (kbd "C-x 8") 'window-toggle-split-direction)
 #+END_SRC
 ** Comments
 #+begin_src emacs-lisp :tangle yes
