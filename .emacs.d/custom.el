@@ -51,7 +51,7 @@
  '(org-agenda-files (quote ("reference.org" "projects.org" "calendar/")))
  '(package-selected-packages
    (quote
-    (esup pdf-tools w3m forecast powerline twittering-mode magit emojify auctex mu4e-alert xterm-color cl-lib fill-column-indicator elpy auto-complete)))
+    (diminish esup pdf-tools w3m forecast powerline twittering-mode magit emojify auctex mu4e-alert xterm-color cl-lib fill-column-indicator elpy)))
  '(send-mail-function (quote mailclient-send-it)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

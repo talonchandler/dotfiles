@@ -315,6 +315,9 @@
 (setq reftex-plug-into-AUCTeX t)
 (add-hook 'lisp-mode-hook 'linum-mode)
 (add-hook 'org-mode-hook 'org-indent-mode)
+(add-hook 'org-mode-hook 'org-beamer-mode)
+(add-hook 'org-mode-hook (diminish 'org-beamer-mode ""))
+(add-hook 'org-mode-hook (diminish 'org-indent-mode ""))
 #+END_SRC
 ** Ido
 #+begin_src emacs-lisp :tangle yes
@@ -339,6 +342,14 @@
 ;; Forecast mode
 (setq forecast-api-key "121b71783a9f4be5f28dde08f968a1c1")
 (setq forecast-units "us")
+
+;; GPG workaround: https://colinxy.github.io/software-installation/2016/09/24/emacs25-easypg-issue.html
+(setq epa-pinentry-mode 'loopback)
+
+;; Diminish
+(require 'diminish)
+(diminish 'org-beamer-mode "")
+(diminish 'org-indent-mode "")
 #+END_SRC
 * Backups
 #+begin_src emacs-lisp :tangle yes
@@ -569,6 +580,19 @@ i.e. change right window to bottom, or change bottom window to right."
 ** Fullscreen
 #+begin_src emacs-lisp :tangle yes
 (global-set-key (kbd "C-c C-f") 'toggle-frame-fullscreen)
+#+END_SRC
+** Unfill Paragraph
+#+begin_src emacs-lisp :tangle yes
+;;; Opposite of fill-paragraph. https://www.emacswiki.org/emacs/UnfillParagraph
+    (defun unfill-paragraph (&optional region)
+      "Takes a multi-line paragraph and makes it into a single line of text."
+      (interactive (progn (barf-if-buffer-read-only) '(t)))
+      (let ((fill-column (point-max))
+            ;; This would override `fill-column' if it's an integer.
+            (emacs-lisp-docstring-fill-column t))
+        (fill-paragraph nil region)))
+    ;; Handy key definition
+    (define-key global-map "\M-Q" 'unfill-paragraph)
 #+END_SRC
 ** Custom commands
 #+begin_src emacs-lisp :tangle yes
