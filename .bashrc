@@ -31,4 +31,13 @@ export PKG_CONFIG_PATH=/usr/local/Cellar/zlib/1.2.11/lib/pkgconfig:/usr/local/li
 . /Users/Talon/anaconda3/etc/profile.d/conda.sh
 
 # For ssh
-eval $(ssh-agent)
+eval $(ssh-agent) > /dev/null 2> /dev/null
+
+# scp 
+function here2mid() {
+    scp `pwd`'/'$1 talonchandler@midway.rcc.uchicago.edu:$2
+}
+
+function mid2here() {
+    scp talonchandler@midway.rcc.uchicago.edu:$1 `pwd`'/'$2 
+}
