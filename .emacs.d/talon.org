@@ -139,59 +139,66 @@
 (global-set-key (kbd "C-c m") 'mu4e)
 #+END_SRC
 * Modes
+** Abbrev
+#+begin_src emacs-lisp :tangle yes
+(setq abbrev-file-name "~/.emacs.d/abbrev_defs")
+(setq save-abbrevs t)
+#+END_SRC
 ** Bibtex
+#+begin_src emacs-lisp :tangle yes
 (setq bibtex-maintain-sorted-entries 't)
+#+END_SRC
 ** Org-mode
 #+begin_src emacs-lisp :tangle yes
-  (setq org-directory "/Users/Talon/GoogleDrive/")
+(setq org-directory "/Users/Talon/GoogleDrive/")
 
-  (setq org-todo-keywords
-        '((sequence "TODO(t)" "STARTED(s)" "WAITING(w)" "|" "CANCELED(c)" "DONE(d)")))
+(setq org-todo-keywords
+      '((sequence "TODO(t)" "STARTED(s)" "WAITING(w)" "|" "CANCELED(c)" "DONE(d)")))
 
-  (setq org-todo-keyword-faces
-             '(("TODO" . "pink")
-               ("STARTED" . "yellow")
-               ("WAITING" . "orange")
-               ("CANCELED" . "red")
-               ("DONE" . "green")))
+(setq org-todo-keyword-faces
+           '(("TODO" . "pink")
+             ("STARTED" . "yellow")
+             ("WAITING" . "orange")
+             ("CANCELED" . "red")
+             ("DONE" . "green")))
 
-  (setq org-tag-alist '((:startgroup . nil)
-                       ("@work" . ?w) ("@home" . ?h) ("errand" . ?e)
-                       (:endgroup .nil)))
-  (setq org-tags-column -85)
+(setq org-tag-alist '((:startgroup . nil)
+                     ("@work" . ?w) ("@home" . ?h) ("errand" . ?e)
+                     (:endgroup .nil)))
+(setq org-tags-column -85)
 
-  (setq org-log-done 'time)
+(setq org-log-done 'time)
 
-  (setq org-default-notes-file "capture.org")
-  (setq org-agenda-files (quote ("capture.org" "reference.org" "projects.org" "calendar/")))
-  (setq org-archive-location "archive/datetree.org::datetree/* Finished Tasks")
-  (setq org-enforce-todo-dependencies t)
-  (setq org-agenda-include-diary t) ;; Read sexp diary entries
-  (setq org-agenda-window-setup "current-window")
-  (setq org-deadline-warning-days 7)
+(setq org-default-notes-file "capture.org")
+(setq org-agenda-files (quote ("capture.org" "reference.org" "projects.org" "calendar/")))
+(setq org-archive-location "archive/datetree.org::datetree/* Finished Tasks")
+(setq org-enforce-todo-dependencies t)
+(setq org-agenda-include-diary t) ;; Read sexp diary entries
+(setq org-agenda-window-setup "current-window")
+(setq org-deadline-warning-days 7)
 
-  (global-set-key (kbd "C-c a") 'org-agenda-list)
-  (global-set-key (kbd "C-c c") 'org-capture)
-  (global-set-key (kbd "C-c s") 'org-store-link)
+(global-set-key (kbd "C-c a") 'org-agenda-list)
+(global-set-key (kbd "C-c c") 'org-capture)
+(global-set-key (kbd "C-c l") 'org-store-link)
 
-  ;; Save window views
-  (setq org-agenda-restore-windows-after-quit t)
+;; Save window views
+(setq org-agenda-restore-windows-after-quit t)
 
-  ;; Org quick done and archive
-  (defun org-toggle-todo-and-fold ()
-    (interactive)
-    (save-excursion
-      (org-back-to-heading t) ;; Make sure command works even if point is
-                              ;; below target heading
-      (cond ((looking-at "\*+ TODO")
-             (org-todo "DONE")
-             (hide-subtree))
-            ((looking-at "\*+ DONE")
-             (org-todo "TODO")
-             (hide-subtree))
-            (t (message "Can only toggle between TODO and DONE.")))))
+;; Org quick done and archive
+(defun org-toggle-todo-and-fold ()
+  (interactive)
+  (save-excursion
+    (org-back-to-heading t) ;; Make sure command works even if point is
+                            ;; below target heading
+    (cond ((looking-at "\*+ TODO")
+           (org-todo "DONE")
+           (hide-subtree))
+          ((looking-at "\*+ DONE")
+           (org-todo "TODO")
+           (hide-subtree))
+          (t (message "Can only toggle between TODO and DONE.")))))
 
-  (global-set-key (kbd "C-x C-d") 'org-toggle-todo-and-fold)
+(global-set-key (kbd "C-x C-d") 'org-toggle-todo-and-fold)
 
 ;; Org export
 (setq org-export-dispatch-use-expert-ui 't)
@@ -236,7 +243,6 @@
 (add-hook 'octave-mode-hook
 	  (lambda ()
 	    (setq tab-width 4)
-	    (abbrev-mode 1)
 	    (auto-fill-mode 1)
 	    (if (eq window-system 'x)
 		                (font-lock-mode 1))))
@@ -257,6 +263,10 @@
 ;;(setenv "PATH" (shell-command-to-string "source ~/.bashrc; echo -n $PATH"))
 (global-set-key (kbd "C-x C-p") 'shell)
 (global-set-key (kbd "C-x C-r") 'replace-string)
+
+;; Open in current window
+(add-to-list 'display-buffer-alist
+     '("^\\*shell\\*$" . (display-buffer-same-window)))
 #+END_SRC
 ** Docview
 #+begin_src emacs-lisp :tangle yes
@@ -304,10 +314,18 @@
 (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
 
 #+END_SRC
+** Mathematica
+#+begin_src emacs-lisp :tangle yes
+;; Basic highlighting from here: http://chasen.org/~daiti-m/dist/math++.el
+;; Fancier stuff here if needed: https://github.com/kawabata/wolfram-mode
+(load-file "~/.emacs.d/math++.el")
+(add-to-list 'auto-mode-alist '("\\.wl\\'" . math-mode))
+#+END_SRC
 ** Minor mode hooks
 #+begin_src emacs-lisp :tangle yes
 (add-hook 'python-mode-hook 'fci-mode)
 (add-hook 'python-mode-hook 'linum-mode)
+(add-hook 'python-mode-hook 'abbrev-mode)
 ;;(add-hook 'LaTeX-mode-hook 'fci-mode)
 ;;(add-hook 'LaTeX-mode-hook 'linum-mode)
 (add-hook 'LaTeX-mode-hook 'flyspell-mode)
@@ -315,9 +333,10 @@
 (setq reftex-plug-into-AUCTeX t)
 (add-hook 'lisp-mode-hook 'linum-mode)
 (add-hook 'org-mode-hook 'org-indent-mode)
+(add-hook 'org-mode-hook (lambda () (diminish 'org-indent-mode "")))
 (add-hook 'org-mode-hook 'org-beamer-mode)
-(add-hook 'org-mode-hook (diminish 'org-beamer-mode ""))
-(add-hook 'org-mode-hook (diminish 'org-indent-mode ""))
+(add-hook 'org-mode-hook (lambda () (diminish 'org-beamer-mode "")))
+(add-hook 'math-mode 'linum-mode)
 #+END_SRC
 ** Ido
 #+begin_src emacs-lisp :tangle yes
@@ -345,11 +364,6 @@
 
 ;; GPG workaround: https://colinxy.github.io/software-installation/2016/09/24/emacs25-easypg-issue.html
 (setq epa-pinentry-mode 'loopback)
-
-;; Diminish
-(require 'diminish)
-(diminish 'org-beamer-mode "")
-(diminish 'org-indent-mode "")
 #+END_SRC
 * Backups
 #+begin_src emacs-lisp :tangle yes

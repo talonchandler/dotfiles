@@ -6,19 +6,14 @@ defaults write com.apple.Dock workspaces-auto-swoosh -bool YES && killall Dock
 
 # Add brew paths
 export PATH="/usr/local/sbin:$PATH"
+export PATH="~/anaconda3/bin:$PATH"
 
 # Ruby 
 export PATH="/usr/local/opt/ruby@2.1/bin:$PATH"
 export PATH="/usr/local/lib/ruby/gems/2.1.0/bin/:$PATH"
-#export PATH=/usr/local/bin:$PATH
 
 # Alias
-alias school='cd ~/GoogleDrive/School/Current'
-alias website='ftp tchandler1@50.62.160.27'
 alias ttop='top -R -F -s 10 -o rsize'
-alias medphys='ssh -X talonchandler@shmi.bsd.uchicago.edu'
-alias midway='ssh -X talonchandler@midway.rcc.uchicago.edu'
-alias siraf='ssh -X talonchandler@siraf-login.bsd.uchicago.edu'
 
 # Setting colour scheme 
 export CLICOLOR=1 # turns on file color
@@ -31,3 +26,9 @@ source /usr/local/opt/nvm/nvm.sh
 
 # For pdf-tools
 export PKG_CONFIG_PATH=/usr/local/Cellar/zlib/1.2.11/lib/pkgconfig:/usr/local/lib/pkgconfig:/opt/X11/lib/pkgconfig
+
+# Conda
+. /Users/Talon/anaconda3/etc/profile.d/conda.sh
+
+# For ssh
+eval $(ssh-agent)
