@@ -49,3 +49,5 @@ export PATH="/Users/Talon/Applications/ParaView-5.4.0.app/Contents/MacOS:$PATH"
 
 # polaris development
 export PATH="/Users/Talon/GoogleDrive/projects/polaris:$PATH"
+
+unset DISPLAY

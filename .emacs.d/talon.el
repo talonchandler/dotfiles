@@ -12,174 +12,10 @@
 (setq calendar-longitude -87.6)
 (setq calendar-location-name "Chicago, IL")
 
-;; Set paths
-(require 'mu4e)
-(setq mu4e-maildir "~/Mail")
-(setq mu4e-sent-folder "/[Gmail].Sent Mail")
-
-;; Don't save messages to Sent Messages, Gmail/IMAP takes care of this
-;;(setq mu4e-sent-messages-behavior 'delete)
-
-;; Updating with crontab but just in case
-(setq mu4e-get-mail-command "true")
-
-;; Auto-retrieve
-(setq mu4e-update-interval 15)
-
-(setq mu4e-index-cleanup nil)
-(setq mu4e-index-lazy-check t)
-(setq mu4e-hide-index-messages t)
-
-;; Patch for changing UIDs
-(setq mu4e-change-filenames-when-moving t)
-
-;; Shortcuts
-(setq mu4e-maildir-shortcuts
-    '( ("/INBOX"               . ?i)
-       ("/[Gmail].Sent Mail"   . ?s)
-       ("/[Gmail].Trash"       . ?t)
-       ("/[Gmail].All Mail"    . ?a)))
-
-;; Refile to
-(setq mu4e-refile-folder "/[Gmail].All Mail")
-(setq mu4e-headers-results-limit '500)
-
-;; View html 
-(setq mu4e-html2text-command "w3m -T text/html")
-;;(setq mu4e-html2text-command 'mu4e-shr2text)
-
-(require 'smtpmail)
-(setq message-send-mail-function 'smtpmail-send-it
-   starttls-use-gnutls t
-   smtpmail-starttls-credentials '(("smtp.gmail.com" 587 nil nil))
-   smtpmail-auth-credentials
-     '(("smtp.gmail.com" 587 "talonchandler@gmail.com" nil))
-   smtpmail-default-smtp-server "smtp.gmail.com"
-   smtpmail-smtp-server "smtp.gmail.com"
-   smtpmail-smtp-service 587)
-
-(mu4e-alert-enable-notifications)
-(mu4e-alert-disable-notifications)
-(load-file "~/.emacs.d/vip.el")
-(add-hook 'after-init-hook #'mu4e-alert-enable-mode-line-display)
-(setq mu4e-alert-email-notification-types '(count))
-
-(defun my-mu4e-alert-mode-line-formatter (mail-count)
-  (when (not (zerop mail-count))
-    (concat " "
-            (if (zerop mail-count)
-                " "
-              (format "[%d UNREAD]" mail-count)))))
-
-(setq mu4e-alert-modeline-formatter 'my-mu4e-alert-mode-line-formatter)
-
-;;(mu4e-alert-set-default-style 'growl)
-;;(add-hook 'after-init-hook #'mu4e-alert-enable-notifications)
-;;(alert-add-rule :category "mu4e-alert" :style 'fringe :predicate (lambda (_) (string-match-p "^mu4e-" (symbol-name major-mode))) :continue t)
-(mu4e-alert-enable-notifications)
-
-;; Signature
-(setq
-   user-mail-address "talonchandler@gmail.com"
-   user-full-name  "Talon Chandler"
-   mu4e-compose-signature
-    (concat
-      "Talon Chandler\n"
-      "(312) 978-1901"))
-
-;; Which email addresses are mine
-(setq mu4e-user-mail-address-list
-'("talonchandler@gmail.com"
-  "talonchandler@talonchandler.com"
-  "talonchandler@uchicago.edu"))
-
-;; Choose headers
-(setq mu4e-headers-fields
-'((:human-date . 10)
- (:flags . 4)
- (:from-or-to . 24)
- (:subject . 34)
- (:mailing-list . 10)))
-
-;; Execute all marks without confirmation.
-(defun my-mu4e-mark-execute-all-no-confirm ()
-   (interactive)
-   (mu4e-mark-execute-all 'no-confirm))
-(define-key mu4e-headers-mode-map "x" #'my-mu4e-mark-execute-all-no-confirm)
-
-;; Display
-(setq shr-color-visible-luminance-min 100)
-
-;; Turn on spell check and fill column
-(add-hook 'mu4e-compose-mode-hook
-  (defun my-do-compose-stuff ()
-    (set-fill-column 72)
-    (flyspell-mode)))
-
-;; Ask to quit
-(setq mu4e-confirm-quit t)
-
-(global-set-key (kbd "C-c m") 'mu4e)
-
 (setq abbrev-file-name "~/.emacs.d/abbrev_defs")
 (setq save-abbrevs t)
 
 (setq bibtex-maintain-sorted-entries 't)
-
-(setq org-directory "/Users/Talon/GoogleDrive/")
-
-(setq org-todo-keywords
-      '((sequence "TODO(t)" "STARTED(s)" "WAITING(w)" "|" "CANCELED(c)" "DONE(d)")))
-
-(setq org-todo-keyword-faces
-           '(("TODO" . "pink")
-             ("STARTED" . "yellow")
-             ("WAITING" . "orange")
-             ("CANCELED" . "red")
-             ("DONE" . "green")))
-
-(setq org-tag-alist '((:startgroup . nil)
-                     ("@work" . ?w) ("@home" . ?h) ("errand" . ?e)
-                     (:endgroup .nil)))
-(setq org-tags-column -85)
-
-(setq org-log-done 'time)
-
-(setq org-default-notes-file "capture.org")
-(setq org-agenda-files (quote ("capture.org" "reference.org" "projects.org" "calendar/")))
-(setq org-archive-location "archive/datetree.org::datetree/* Finished Tasks")
-(setq org-enforce-todo-dependencies t)
-(setq org-agenda-include-diary t) ;; Read sexp diary entries
-(setq org-agenda-window-setup "current-window")
-(setq org-deadline-warning-days 7)
-
-(global-set-key (kbd "C-c a") 'org-agenda-list)
-(global-set-key (kbd "C-c c") 'org-capture)
-(global-set-key (kbd "C-c l") 'org-store-link)
-
-;; Save window views
-(setq org-agenda-restore-windows-after-quit t)
-
-;; Org quick done and archive
-(defun org-toggle-todo-and-fold ()
-  (interactive)
-  (save-excursion
-    (org-back-to-heading t) ;; Make sure command works even if point is
-                            ;; below target heading
-    (cond ((looking-at "\*+ TODO")
-           (org-todo "DONE")
-           (hide-subtree))
-          ((looking-at "\*+ DONE")
-           (org-todo "TODO")
-           (hide-subtree))
-          (t (message "Can only toggle between TODO and DONE.")))))
-
-(global-set-key (kbd "C-x C-d") 'org-toggle-todo-and-fold)
-
-;; Org export
-(setq org-export-dispatch-use-expert-ui 't)
-
-(require 'org-mu4e)
 
 (global-set-key (kbd "C-x g") 'magit-status)
 (global-set-key (kbd "C-x M-g") 'magit-dispatch-popup)
@@ -232,48 +68,6 @@
 (add-to-list 'display-buffer-alist
      '("^\\*shell\\*$" . (display-buffer-same-window)))
 
-(setq doc-view-resolution 300)
-
-;;; Install epdfinfo via 'brew install pdf-tools' and then install the
-;;; pdf-tools elisp via the use-package below. To upgrade the epdfinfo
-;;; server, just do 'brew upgrade pdf-tools' prior to upgrading to newest
-;;; pdf-tools package using Emacs package system. If things get messed
-;;; up, just do 'brew uninstall pdf-tools', wipe out the elpa
-;;; pdf-tools package and reinstall both as at the start.
-;(use-package pdf-tools
-;  :ensure t
-;  :config
-;  (custom-set-variables
-;    '(pdf-tools-handle-upgrades nil)) ; Use brew upgrade pdf-tools instead.
-;  (setq pdf-info-epdfinfo-program "/usr/local/bin/epdfinfo"))
-;(pdf-tools-install)
-
-(require 'fill-column-indicator)
-(setq fci-rule-color "white")
-(setq-default fill-column 80)
-(setq fci-rule-column 80)
-(setq fci-rule-use-dashes nil)
-
-(setq TeX-PDF-mode t)
-(setq TeX-save-query nil) ;;autosave before compiling
-
-;; Scale preview size
-(set-default 'preview-scale-function 1.0)
-
-;; Disable annoying fontification in latex
-(setq font-latex-fontify-script nil)
-
-;; Don't ask to cache preamble
-(setq preview-auto-cache-preamble t)
-
-;; Enable math mode (type ` then letter for character)
-(add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
-
-;; Basic highlighting from here: http://chasen.org/~daiti-m/dist/math++.el
-;; Fancier stuff here if needed: https://github.com/kawabata/wolfram-mode
-(load-file "~/.emacs.d/math++.el")
-(add-to-list 'auto-mode-alist '("\\.wl\\'" . math-mode))
-
 (add-hook 'python-mode-hook 'fci-mode)
 (add-hook 'python-mode-hook 'linum-mode)
 (add-hook 'python-mode-hook 'abbrev-mode)
@@ -299,15 +93,10 @@
 (setq ido-max-window-height 1)
 
 ;; Use autocomplete
-(global-auto-complete-mode t)
 
 ;; Read html
 (setq mm-text-html-renderer 'w3m)
 (setq org-return-follows-link 't)
-
-;; Forecast mode
-(setq forecast-api-key "121b71783a9f4be5f28dde08f968a1c1")
-(setq forecast-units "us")
 
 ;; GPG workaround: https://colinxy.github.io/software-installation/2016/09/24/emacs25-easypg-issue.html
 (setq epa-pinentry-mode 'loopback)
@@ -332,10 +121,10 @@
 ;; Display settings
 (setq mac-allow-anti-aliasing t)
 
-(load-file "~/.emacs.d/xterm-color/xterm-color.el")
-(require 'xterm-color)
-(progn (add-hook 'comint-preoutput-filter-functions 'xterm-color-filter)
-       (setq comint-output-filter-functions (remove 'ansi-color-process-output comint-output-filter-functions)))
+;;(load-file "~/.emacs.d/xterm-color/xterm-color.el")
+;;(require 'xterm-color)
+;;(progn (add-hook 'comint-preoutput-filter-functions 'xterm-color-filter)
+;;       (setq comint-output-filter-functions (remove 'ansi-color-process-output comint-output-filter-functions)))
 
 (add-to-list 'default-frame-alist '(font . "Monaco 12"))
 (if (string-equal system-type "darwin")
@@ -506,16 +295,4 @@ i.e. change right window to bottom, or change bottom window to right."
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file 'noerror)
 
-;; Initial window layout
-(when window-system (set-frame-size (selected-frame) 180 48))
-(find-file "~/.emacs.d/talon.org")
-(find-file "~/GoogleDrive/projects.org")
 (shell "*shell1*")
-(switch-to-buffer "projects.org")
-(org-agenda-list)
-(balance-windows)
-(other-window 1)
-(kill-buffer "canada.org")
-(kill-buffer "america.org")
-(kill-buffer "journalclub.org")
-(kill-buffer "diary")
