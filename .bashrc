@@ -6,7 +6,6 @@ defaults write com.apple.Dock workspaces-auto-swoosh -bool YES && killall Dock
 
 # Add brew paths
 export PATH="/usr/local/sbin:$PATH"
-export PATH="~/anaconda3/bin:$PATH"
 
 # Ruby 
 export PATH="/usr/local/opt/ruby@2.1/bin:$PATH"
@@ -14,6 +13,8 @@ export PATH="/usr/local/lib/ruby/gems/2.1.0/bin/:$PATH"
 
 # Alias
 alias ttop='top -R -F -s 10 -o rsize'
+alias size='du -sh * | sort -hr'
+alias wifi='osx-wifi-cli'
 
 # Setting colour scheme 
 export CLICOLOR=1 # turns on file color
@@ -28,7 +29,7 @@ source /usr/local/opt/nvm/nvm.sh
 export PKG_CONFIG_PATH=/usr/local/Cellar/zlib/1.2.11/lib/pkgconfig:/usr/local/lib/pkgconfig:/opt/X11/lib/pkgconfig
 
 # Conda
-. /Users/Talon/anaconda3/etc/profile.d/conda.sh
+export PATH="/usr/local/anaconda3/bin:$PATH"
 
 # For ssh
 eval $(ssh-agent) > /dev/null 2> /dev/null
@@ -41,3 +42,10 @@ function here2mid() {
 function mid2here() {
     scp talonchandler@midway.rcc.uchicago.edu:$1 `pwd`'/'$2 
 }
+
+# Paraview
+export PATH="/Users/Talon/Applications/ParaView-5.4.0.app/Contents/bin:$PATH"
+export PATH="/Users/Talon/Applications/ParaView-5.4.0.app/Contents/MacOS:$PATH"
+
+# polaris development
+export PATH="/Users/Talon/GoogleDrive/projects/polaris:$PATH"
