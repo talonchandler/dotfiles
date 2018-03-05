@@ -29,6 +29,7 @@ source /usr/local/opt/nvm/nvm.sh
 export PKG_CONFIG_PATH=/usr/local/Cellar/zlib/1.2.11/lib/pkgconfig:/usr/local/lib/pkgconfig:/opt/X11/lib/pkgconfig
 
 # Conda
+#. /usr/local/anaconda3/etc/profile.d/conda.sh
 export PATH="/usr/local/anaconda3/bin:$PATH"
 
 # For ssh
@@ -36,11 +37,11 @@ eval $(ssh-agent) > /dev/null 2> /dev/null
 
 # scp 
 function here2mid() {
-    scp `pwd`'/'$1 talonchandler@midway.rcc.uchicago.edu:$2
+    scp -r `pwd`'/'$1 talonchandler@midway.rcc.uchicago.edu:$2
 }
 
 function mid2here() {
-    scp talonchandler@midway.rcc.uchicago.edu:$1 `pwd`'/'$2 
+    scp -r talonchandler@midway.rcc.uchicago.edu:$1 `pwd`'/'$2 
 }
 
 # Paraview

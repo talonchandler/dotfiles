@@ -332,6 +332,12 @@
 ;; Display settings
 (setq mac-allow-anti-aliasing t)
 
+;; Window sizes
+(add-to-list 'initial-frame-alist '(width . 180))
+(add-to-list 'initial-frame-alist '(height . 48))
+(add-to-list 'default-frame-alist '(width . 89))
+(add-to-list 'default-frame-alist '(height . 48))
+
 (load-file "~/.emacs.d/xterm-color/xterm-color.el")
 (require 'xterm-color)
 (progn (add-hook 'comint-preoutput-filter-functions 'xterm-color-filter)
@@ -507,7 +513,7 @@ i.e. change right window to bottom, or change bottom window to right."
 (load custom-file 'noerror)
 
 ;; Initial window layout
-(when window-system (set-frame-size (selected-frame) 180 48))
+;; (when window-system (set-frame-size (selected-frame) 180 48))
 (find-file "~/.emacs.d/talon.org")
 (find-file "~/GoogleDrive/projects.org")
 (shell "*shell1*")
@@ -519,3 +525,4 @@ i.e. change right window to bottom, or change bottom window to right."
 (kill-buffer "america.org")
 (kill-buffer "journalclub.org")
 (kill-buffer "diary")
+(window-toggle-split-direction)
