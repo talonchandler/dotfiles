@@ -613,6 +613,8 @@ i.e. change right window to bottom, or change bottom window to right."
         (fill-paragraph nil region)))
     ;; Handy key definition
     (define-key global-map "\M-Q" 'unfill-paragraph)
+
+(setq sentence-end-double-space nil)
 #+END_SRC
 ** Custom commands
 #+begin_src emacs-lisp :tangle yes

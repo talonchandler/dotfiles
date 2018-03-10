@@ -508,6 +508,8 @@ i.e. change right window to bottom, or change bottom window to right."
     ;; Handy key definition
     (define-key global-map "\M-Q" 'unfill-paragraph)
 
+(setq sentence-end-double-space nil)
+
 ;; Place custom commands in another file
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file 'noerror)
