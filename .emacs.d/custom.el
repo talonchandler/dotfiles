@@ -4,8 +4,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(TeX-command-list
-   (quote
-    (("TeX" "%(PDF)%(tex) %(file-line-error) %(extraopts) %`%S%(PDFout)%(mode)%' %t" TeX-run-TeX nil
+   '(("TeX" "%(PDF)%(tex) %(file-line-error) %(extraopts) %`%S%(PDFout)%(mode)%' %t" TeX-run-TeX nil
       (plain-tex-mode texinfo-mode ams-tex-mode)
       :help "Run plain TeX")
      ("LaTeX" "%`%l%(mode)%' %t; open %s" TeX-run-TeX nil
@@ -43,22 +42,28 @@
      ("Spell" "(TeX-ispell-document \"\")" TeX-run-function nil t :help "Spell-check the document")
      ("Clean" "TeX-clean" TeX-run-function nil t :help "Delete generated intermediate files")
      ("Clean All" "(TeX-clean t)" TeX-run-function nil t :help "Delete generated intermediate and output files")
-     ("Other" "" TeX-run-command t t :help "Run an arbitrary command"))))
+     ("Other" "" TeX-run-command t t :help "Run an arbitrary command")))
  '(auth-source-save-behavior nil)
+ '(cfw:display-calendar-holidays nil)
  '(custom-safe-themes
-   (quote
-    ("ad24ea739f229477ea348af968634cb7a0748c9015110a777c8effeddfa920f5" "e7ec0cc3ce134cc0bd420b98573bbd339a908ac24162b8034c98e1ba5ee1f9f6" default)))
- '(org-agenda-files (quote ("reference.org" "projects.org" "calendar/")))
+   '("ad24ea739f229477ea348af968634cb7a0748c9015110a777c8effeddfa920f5" "e7ec0cc3ce134cc0bd420b98573bbd339a908ac24162b8034c98e1ba5ee1f9f6" default))
  '(package-selected-packages
-   (quote
-    (diminish esup pdf-tools w3m forecast powerline twittering-mode magit emojify auctex mu4e-alert xterm-color cl-lib fill-column-indicator elpy)))
- '(send-mail-function (quote mailclient-send-it)))
+   '(calfw calfw-org auto-complete helm-bibtex diminish esup pdf-tools w3m forecast powerline twittering-mode magit emojify mu4e-alert xterm-color cl-lib fill-column-indicator elpy))
+ '(send-mail-function 'mailclient-send-it)
+ '(show-trailing-whitespace t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(default ((t (:inherit nil :stipple nil :background "Black" :foreground "light grey" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 1 :width normal :foundry "default" : family "default"))))
+ '(cfw:face-default-content ((t (:foreground "grey80"))))
+ '(cfw:face-header ((t (:foreground "grey80" :weight bold))))
+ '(cfw:face-saturday ((t nil)))
+ '(cfw:face-sunday ((t (:foreground "grey80" :weight bold))))
+ '(cfw:face-title ((t (:inherit variable-pitch :foreground "grey80" :weight bold :height 2.0))))
+ '(cfw:face-toolbar ((t (:background "black" :foreground "black"))))
+ '(cfw:face-toolbar-button-off ((t (:foreground "Gray80" :weight bold))))
  '(dired-flagged ((t (:inherit default))))
  '(dired-marked ((t (:inherit default) fault)))
  '(font-latex-script-char-face ((t (:foreground "Red"))))
@@ -70,12 +75,11 @@
  '(fringe ((t (:background "black"))))
  '(minibuffer-prompt ((t (:foreground "cyan"))))
  '(mode-line ((t (:background "grey80" :foreground "black" :box (:line-width 1 :color "grey80" :style released-button)))))
- '(mode-line-highlight ((t nil)))
  '(mode-line-inactive ((t (:inherit mode-line :background "black" :foreground "grey80" :weight light))))
- '(mu4e-header-highlight-face ((t (:inherit region :weight bold))))
- '(mu4e-modeline-face ((t (:inherit mode-line-read-only-face :weight bold))))
+ '(org-headline-done ((t (:foreground "light sky blue"))))
  '(preview-face ((t nil)))
  '(tool-bar ((t (:background "grey75" :foreground "black" :box (:line-width 1 :color "gray3" :style released-button)))))
+ '(trailing-whitespace ((t (:background "gray15"))))
  '(window-divider ((t (:foreground "black"))))
  '(window-divider-first-pixel ((t (:foreground "black"))))
  '(window-divider-last-pixel ((t (:foreground "black")))))
