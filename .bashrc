@@ -5,11 +5,12 @@ PS1="\[\e[91m\][\u@\h]\[\e[0m\] \[\e[95m\]\w\[\e[31m\]\n\[\e[96m\]\t $ \[\e[0m\]
 defaults write com.apple.Dock workspaces-auto-swoosh -bool YES && killall Dock
 
 # Add brew paths
-export PATH="/usr/local/sbin:$PATH"
+# export PATH="/usr/local/sbin:$PATH"
+eval $(/opt/homebrew/bin/brew shellenv)
 
-# Ruby 
-export PATH="/usr/local/opt/ruby@2.1/bin:$PATH"
-export PATH="/usr/local/lib/ruby/gems/2.1.0/bin/:$PATH"
+# Ruby
+# export PATH="/usr/local/opt/ruby@2.1/bin:$PATH"
+# export PATH="/usr/local/lib/ruby/gems/2.1.0/bin/:$PATH"
 
 # Alias
 alias ttop='top -R -F -s 10 -o rsize'
@@ -22,20 +23,17 @@ export LSCOLORS=ExFxCxDxBxEGEDABAGACAD # lightens file colors
 export TERM="xterm-256color" # not useful as far as I can tell
 
 # For cask
-export HOMEBREW_CASK_OPTS="--appdir=~/Applications"
-source /usr/local/opt/nvm/nvm.sh
+# export HOMEBREW_CASK_OPTS="--appdir=~/Applications"
+# source /usr/local/opt/nvm/nvm.sh
 
 # For pdf-tools
-export PKG_CONFIG_PATH=/usr/local/Cellar/zlib/1.2.11/lib/pkgconfig:/usr/local/lib/pkgconfig:/opt/X11/lib/pkgconfig
+# export PKG_CONFIG_PATH=/usr/local/Cellar/zlib/1.2.11/lib/pkgconfig:/usr/local/lib/pkgconfig:/opt/X11/lib/pkgconfig
 
 # Conda
 #. /usr/local/anaconda3/etc/profile.d/conda.sh
-export PATH="/usr/local/anaconda3/bin:$PATH"
+# export PATH="/usr/local/anaconda3/bin:$PATH"
 
-# For ssh
-eval $(ssh-agent) > /dev/null 2> /dev/null
-
-# scp 
+# scp
 function here2mid() {
     scp -r `pwd`'/'$1 talonchandler@midway.rcc.uchicago.edu:$2
 }
@@ -45,8 +43,11 @@ function mid2here() {
 }
 
 # Paraview
-export PATH="/Users/Talon/Applications/ParaView-5.4.0.app/Contents/bin:$PATH"
-export PATH="/Users/Talon/Applications/ParaView-5.4.0.app/Contents/MacOS:$PATH"
+# export PATH="/Users/Talon/Applications/ParaView-5.4.0.app/Contents/bin:$PATH"
+# export PATH="/Users/Talon/Applications/ParaView-5.4.0.app/Contents/MacOS:$PATH"
 
 # polaris development
-export PATH="/Users/Talon/GoogleDrive/projects/polaris:$PATH"
+# export PATH="/Users/Talon/GoogleDrive/projects/polaris:$PATH"
+
+# Install integrations
+source /Users/talon.chandler/.iterm2_shell_integration.bash
