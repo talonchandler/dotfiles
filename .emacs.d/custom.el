@@ -48,7 +48,7 @@
  '(custom-safe-themes
    '("ad24ea739f229477ea348af968634cb7a0748c9015110a777c8effeddfa920f5" "e7ec0cc3ce134cc0bd420b98573bbd339a908ac24162b8034c98e1ba5ee1f9f6" default))
  '(package-selected-packages
-   '(calfw calfw-org auto-complete helm-bibtex diminish esup pdf-tools w3m forecast powerline twittering-mode magit emojify mu4e-alert xterm-color cl-lib fill-column-indicator elpy))
+   '(yafolding highlight-indentation yaml-mode calfw calfw-org auto-complete helm-bibtex diminish esup pdf-tools w3m forecast powerline twittering-mode magit emojify mu4e-alert xterm-color cl-lib fill-column-indicator elpy))
  '(send-mail-function 'mailclient-send-it)
  '(show-trailing-whitespace t))
 (custom-set-faces

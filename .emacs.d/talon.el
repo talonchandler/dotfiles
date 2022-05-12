@@ -5,12 +5,14 @@
              '("melpa" . "http://melpa.org/packages/")
              '("elpy" . "http://jorgenschaefer.github.io/packages/"))
 (setq package-enable-at-startup nil)
+(setq byte-compile-warnings '(cl-functions))
+(setq auto-save-default nil)
 
 (setq user-full-name "Talon Chandler")
-(setq user-mail-address "talonchandler@talonchandler.com")
-(setq calendar-latitude 41.9)
-(setq calendar-longitude -87.6)
-(setq calendar-location-name "Chicago, IL")
+(setq user-mail-address "talonchandler@gmail.com")
+(setq calendar-latitude 37.4)
+(setq calendar-longitude -122.3)
+(setq calendar-location-name "San Francisco, CA")
 
 ;; Set paths
 ;; (require 'mu4e)
@@ -202,9 +204,9 @@ argument. If it is numeric, jump that many entries back."
 
 ;; Locations
 (setq helm-bibtex-full-frame nil)
-(setq bibtex-completion-bibliography '("~/Library/texmf/talon.bib"))
-(setq bibtex-completion-library-path "~/GoogleDrive/reference/papers/")
-(setq bibtex-completion-notes-path "~/GoogleDrive/reference/papers/notes.org")
+(setq bibtex-completion-bibliography '("~/Dropbox/org/talon.bib"))
+(setq bibtex-completion-library-path "~/Dropbox/org/papers/")
+;;(setq bibtex-completion-notes-path "~/Dropbox/org/papers/notes.org")
 
 ;; Display setting
 (setq bibtex-completion-display-formats '((t . "${author:24} ${title:*} ${year:4} ${=type=:7} ${=has-pdf=:1}${=has-note=:1}")))
@@ -229,23 +231,23 @@ argument. If it is numeric, jump that many entries back."
                 keys)))
     (insert "\n" (s-join "\n" refs) "\n")))
 
-(setq org-directory "/Users/Talon/GoogleDrive/")
+(setq org-directory "~/Dropbox/org/")
   (setq org-agenda-files '("reference.org" "projects.org" "calendar/"))
   (setq org-hide-block-startup t)
 
   (setq org-todo-keywords
-        '((sequence "TODO(t)" "STARTED(s)" "WAITING(w)" "|" "CANCELED(c)" "DONE(d)")))
+	'((sequence "TODO(t)" "STARTED(s)" "WAITING(w)" "|" "CANCELED(c)" "DONE(d)")))
 
   (setq org-todo-keyword-faces
-             '(("TODO" . "pink")
-               ("STARTED" . "yellow")
-               ("WAITING" . "orange")
-               ("CANCELED" . "red")
-               ("DONE" . "green")))
+	     '(("TODO" . "pink")
+	       ("STARTED" . "yellow")
+	       ("WAITING" . "orange")
+	       ("CANCELED" . "red")
+	       ("DONE" . "green")))
 
   (setq org-tag-alist '((:startgroup . nil)
-                       ("@work" . ?w) ("@home" . ?h) ("errand" . ?e)
-                       (:endgroup .nil)))
+		       ("@work" . ?w) ("@home" . ?h) ("errand" . ?e)
+		       (:endgroup .nil)))
   (setq org-tags-column -85)
 
   (setq org-log-done 'time)
@@ -272,19 +274,22 @@ argument. If it is numeric, jump that many entries back."
     (interactive)
     (save-excursion
       (org-back-to-heading t) ;; Make sure command works even if point is
-                              ;; below target heading
+			      ;; below target heading
       (cond ((looking-at "\*+ TODO")
-             (org-todo "DONE")
-             (hide-subtree))
-            ((looking-at "\*+ DONE")
-             (org-todo "TODO")
-             (hide-subtree))
-            (t (message "Can only toggle between TODO and DONE.")))))
+	     (org-todo "DONE")
+	     (hide-subtree))
+	    ((looking-at "\*+ DONE")
+	     (org-todo "TODO")
+	     (hide-subtree))
+	    (t (message "Can only toggle between TODO and DONE.")))))
 
   (global-set-key (kbd "C-x C-d") 'org-toggle-todo-and-fold)
 
   ;; Org export
   (setq org-export-dispatch-use-expert-ui 't)
+
+  ;; Org indent mode
+  (setq org-startup-indented t)
 
   ;;(require 'org-mu4e)
 
@@ -416,6 +421,8 @@ argument. If it is numeric, jump that many entries back."
 
 (add-hook 'math-mode 'linum-mode)
 
+(add-hook 'yaml-mode-hook 'yafolding-mode)
+
 ;; Use ido
 (require 'ido)
 (ido-mode 1)
@@ -427,7 +434,7 @@ argument. If it is numeric, jump that many entries back."
 (setq ido-max-window-height 1)
 
 ;; Use autocomplete
-(global-auto-complete-mode t)
+;;(global-auto-complete-mode t)
 
 ;; Read html
 (setq mm-text-html-renderer 'w3m)
@@ -663,15 +670,23 @@ i.e. change right window to bottom, or change bottom window to right."
 (load custom-file 'noerror)
 
 ;; Initial window layout
-;; (when window-system (set-frame-size (selected-frame) 180 48))
 (find-file "~/.emacs.d/talon.org")
-(find-file "/Users/Talon/GoogleDrive/projects.org")
-(shell "*shell1*")
+(find-file "~/Dropbox/org/projects.org")
 (switch-to-buffer "projects.org")
-(org-agenda-list)
+;; (org-agenda-list)
 ;; (my-open-calendar)
+
+(other-window 1)
+(shell "*shell1*")
+(switch-to-buffer "*shell1*")
+
 (other-window 1)
 (window-toggle-split-direction)
-(kill-buffer "canada.org")
-(kill-buffer "america.org")
-(kill-buffer "diary")
+(other-window 1)
+;;(kill-buffer "canada.org")
+;;(kill-buffer "america.org")
+;;(kill-buffer "diary")
+
+;; Full size frames
+(add-to-list 'initial-frame-alist '(fullscreen . maximized))
+(add-to-list 'default-frame-alist '(fullscreen . maximized))
