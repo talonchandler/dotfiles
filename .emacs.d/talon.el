@@ -433,6 +433,9 @@ argument. If it is numeric, jump that many entries back."
 (setq ido-ignore-files '("\.ldf" "\.fdb_latexmk"))
 (setq ido-max-window-height 1)
 
+(setq yas-snippet-dirs '("~/.emacs.d/snippets"))
+(yas-global-mode 1)
+
 ;; Use autocomplete
 ;;(global-auto-complete-mode t)
 
@@ -623,6 +626,12 @@ i.e. change right window to bottom, or change bottom window to right."
 
  (global-set-key (kbd "C-x 8") 'window-toggle-split-direction)
 
+(require 'buffer-move)
+(global-set-key (kbd "<C-S-up>")     'buf-move-up)
+(global-set-key (kbd "<C-S-down>")   'buf-move-down)
+(global-set-key (kbd "<C-S-left>")   'buf-move-left)
+(global-set-key (kbd "<C-S-right>")  'buf-move-right)
+
 (global-set-key (kbd "M-c") 'comment-region)
 (global-set-key (kbd "M-u") 'uncomment-region)
 
@@ -670,22 +679,17 @@ i.e. change right window to bottom, or change bottom window to right."
 (load custom-file 'noerror)
 
 ;; Initial window layout
+(shell "*shell1*")
 (find-file "~/.emacs.d/talon.org")
+(find-file "~/Dropbox/org/reference.org")
 (find-file "~/Dropbox/org/projects.org")
 (switch-to-buffer "projects.org")
-;; (org-agenda-list)
-;; (my-open-calendar)
 
 (other-window 1)
-(shell "*shell1*")
 (switch-to-buffer "*shell1*")
 
-(other-window 1)
 (window-toggle-split-direction)
-(other-window 1)
-;;(kill-buffer "canada.org")
-;;(kill-buffer "america.org")
-;;(kill-buffer "diary")
+(buf-move-right)
 
 ;; Full size frames
 (add-to-list 'initial-frame-alist '(fullscreen . maximized))
