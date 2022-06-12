@@ -130,6 +130,10 @@
 ;; ;; Truncate lines by default
 ;; (setq truncate-lines t)
 
+;; (global-set-key (kbd "C-c m") 'mu4e)
+;; (global-set-key (kbd "C-c p") (lambda () (interactive) (switch-to-buffer "projects.org")))
+;; (global-set-key (kbd "C-c r") (lambda () (interactive) (switch-to-buffer "reference.org")))
+
 (setq abbrev-file-name "~/.emacs.d/abbrev_defs")
 (setq save-abbrevs t)
 
@@ -144,7 +148,7 @@
 ;; Cleaning from Nick Higham
 (setq bibtex-entry-format
       '(page-dashes required-fields numerical-fields whitespace
-        last-comma delimiters unify-case sort-fields realign strings braces))
+                    last-comma delimiters unify-case sort-fields realign strings braces))
 
 (setq bibtex-field-delimiters 'double-quotes)
 (setq bibtex-entry-delimiters 'braces)
@@ -166,8 +170,8 @@
 ;; http://kitchingroup.cheme.cmu.edu/blog/2014/10/13/Navigating-your-bibtex-file/
 (defun bibtex-next-entry (&optional n)
   "Jump to the beginning of the next bibtex entry. N is a prefix
-argument. If it is numeric, jump that many entries
-forward. Negative numbers do nothing."
+ argument. If it is numeric, jump that many entries
+ forward. Negative numbers do nothing."
   (interactive "P")
   ;; Note if we start at the beginning of an entry, nothing
   ;; happens. We need to move forward a char, and call again.
@@ -184,12 +188,12 @@ forward. Negative numbers do nothing."
 
 (defun bibtex-previous-entry (&optional n)
   "Jump to beginning of the previous bibtex entry. N is a prefix
-argument. If it is numeric, jump that many entries back."
+ argument. If it is numeric, jump that many entries back."
   (interactive "P")
   (bibtex-beginning-of-entry)
- (when 
-     (re-search-backward bibtex-entry-head nil t (and (numberp n) n))
-   (bibtex-beginning-of-entry)))
+  (when 
+      (re-search-backward bibtex-entry-head nil t (and (numberp n) n))
+    (bibtex-beginning-of-entry)))
 
 (defun jmax-bibtex-mode-keys ()
   "Modify keymaps used by `bibtex-mode'."
@@ -232,74 +236,74 @@ argument. If it is numeric, jump that many entries back."
     (insert "\n" (s-join "\n" refs) "\n")))
 
 (setq org-directory "~/Dropbox/org/")
-  (setq org-agenda-files '("reference.org" "projects.org" "calendar/"))
-  (setq org-hide-block-startup t)
+(setq org-agenda-files '("reference.org" "projects.org" "calendar/"))
+(setq org-hide-block-startup nil)
 
-  (setq org-todo-keywords
-	'((sequence "TODO(t)" "STARTED(s)" "WAITING(w)" "|" "CANCELED(c)" "DONE(d)")))
+(setq org-todo-keywords
+      '((sequence "TODO(t)" "STARTED(s)" "WAITING(w)" "|" "CANCELED(c)" "DONE(d)")))
 
-  (setq org-todo-keyword-faces
-	     '(("TODO" . "pink")
-	       ("STARTED" . "yellow")
-	       ("WAITING" . "orange")
-	       ("CANCELED" . "red")
-	       ("DONE" . "green")))
+(setq org-todo-keyword-faces
+      '(("TODO" . "pink")
+        ("STARTED" . "yellow")
+        ("WAITING" . "orange")
+        ("CANCELED" . "red")
+        ("DONE" . "green")))
 
-  (setq org-tag-alist '((:startgroup . nil)
-		       ("@work" . ?w) ("@home" . ?h) ("errand" . ?e)
-		       (:endgroup .nil)))
-  (setq org-tags-column -85)
+(setq org-tag-alist '((:startgroup . nil)
+                      ("@work" . ?w) ("@home" . ?h) ("errand" . ?e)
+                      (:endgroup .nil)))
+(setq org-tags-column -85)
 
-  (setq org-log-done 'time)
+(setq org-log-done 'time)
 
-  (setq org-default-notes-file "capture.org")
-  (setq org-agenda-files (quote ("reference.org" "projects.org" "calendar/")))
-  (setq org-archive-location "archive/datetree.org::datetree/* Finished Tasks")
-  (setq org-enforce-todo-dependencies t)
-  (setq org-agenda-include-diary t) ;; Read sexp diary entries
-  (setq org-agenda-window-setup "current-window")
-  (setq org-deadline-warning-days 7)
+(setq org-default-notes-file "capture.org")
+(setq org-agenda-files (quote ("reference.org" "projects.org" "calendar/")))
+(setq org-archive-location "archive/datetree.org::datetree/* Finished Tasks")
+(setq org-enforce-todo-dependencies t)
+(setq org-agenda-include-diary t) ;; Read sexp diary entries
+(setq org-agenda-window-setup "current-window")
+(setq org-deadline-warning-days 7)
 
-  (global-set-key (kbd "C-c a") 'org-agenda-list)
-  (global-set-key (kbd "C-c c") 'org-capture)
-  (global-set-key (kbd "C-c l") 'org-store-link)
+(global-set-key (kbd "C-c a") 'org-agenda-list)
+(global-set-key (kbd "C-c c") 'org-capture)
+(global-set-key (kbd "C-c l") 'org-store-link)
 
-  (global-set-key (kbd "C-c s") (lambda () (interactive) (org-content 2)))
+(global-set-key (kbd "C-c s") (lambda () (interactive) (org-content 2)))
 
-  ;; Save window views
-  (setq org-agenda-restore-windows-after-quit t)
+;; Save window views
+(setq org-agenda-restore-windows-after-quit t)
 
-  ;; Org quick done and archive
-  (defun org-toggle-todo-and-fold ()
-    (interactive)
-    (save-excursion
-      (org-back-to-heading t) ;; Make sure command works even if point is
-			      ;; below target heading
-      (cond ((looking-at "\*+ TODO")
-	     (org-todo "DONE")
-	     (hide-subtree))
-	    ((looking-at "\*+ DONE")
-	     (org-todo "TODO")
-	     (hide-subtree))
-	    (t (message "Can only toggle between TODO and DONE.")))))
+;; Org quick done and archive
+(defun org-toggle-todo-and-fold ()
+  (interactive)
+  (save-excursion
+    (org-back-to-heading t) ;; Make sure command works even if point is
+    ;; below target heading
+    (cond ((looking-at "\*+ TODO")
+           (org-todo "DONE")
+           (hide-subtree))
+          ((looking-at "\*+ DONE")
+           (org-todo "TODO")
+           (hide-subtree))
+          (t (message "Can only toggle between TODO and DONE.")))))
 
-  (global-set-key (kbd "C-x C-d") 'org-toggle-todo-and-fold)
+(global-set-key (kbd "C-x C-d") 'org-toggle-todo-and-fold)
 
-  ;; Org export
-  (setq org-export-dispatch-use-expert-ui 't)
+;; Org export
+(setq org-export-dispatch-use-expert-ui 't)
 
-  ;; Org indent mode
-  (setq org-startup-indented t)
+;; Org indent mode
+(setq org-startup-indented t)
 
-  ;;(require 'org-mu4e)
+;;(require 'org-mu4e)
 
-  ;; Start everything folded
-  (setq org-hide-block-startup 't)
-  (setq org-startup-folded 't)
+;; Start everything folded
+;;(setq org-hide-block-startup 't)
+(setq org-startup-folded 't)
 
-  ;;
-  (require 'calfw)
-  (require 'calfw-org)
+;;
+(require 'calfw)
+(require 'calfw-org)
 
 (defun my-open-calendar ()
   (interactive)
@@ -308,7 +312,7 @@ argument. If it is numeric, jump that many entries back."
    :contents-sources
    (list
     (cfw:org-create-source "LightSkyBlue")  ; orgmode source
-   )))
+    )))
 (global-set-key (kbd "C-x a") 'my-open-calendar)
 
 (setq cfw:render-line-breaker 'cfw:render-line-breaker-wordwrap)
@@ -684,7 +688,6 @@ i.e. change right window to bottom, or change bottom window to right."
 (find-file "~/Dropbox/org/reference.org")
 (find-file "~/Dropbox/org/projects.org")
 (switch-to-buffer "projects.org")
-
 (other-window 1)
 (switch-to-buffer "*shell1*")
 

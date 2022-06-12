@@ -24,3 +24,6 @@ source /Users/talon.chandler/.iterm2_shell_integration.bash
 
 # Turn off zsh warning osxexport BASH_SILENCE_DEPRECATION_WARNING1=
 export BASH_SILENCE_DEPRECATION_WARNING=1
+
+# Enable conda in scripts and emacs shell (https://github.com/conda/conda/issues/7980)
+source /opt/anaconda3/etc/profile.d/conda.sh

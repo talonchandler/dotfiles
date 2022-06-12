@@ -1,5 +1,4 @@
 * Starting up
-** Package initialize
 #+BEGIN_SRC emacs-lisp :tangle yes
   (setq gc-cons-threshold 10000000)
   (package-initialize)
@@ -147,11 +146,11 @@
   ;; (setq truncate-lines t)
 #+END_SRC
 ** Shortcut
-+BEGIN_SRC emacs-lisp :tangle yes
+#+BEGIN_SRC emacs-lisp :tangle yes
  ;; (global-set-key (kbd "C-c m") 'mu4e)
  ;; (global-set-key (kbd "C-c p") (lambda () (interactive) (switch-to-buffer "projects.org")))
  ;; (global-set-key (kbd "C-c r") (lambda () (interactive) (switch-to-buffer "reference.org")))
-+END_SRC
+#+END_SRC
 * Modes
 ** Abbrev
 #+BEGIN_SRC emacs-lisp :tangle yes
@@ -160,71 +159,71 @@
 #+END_SRC
 ** Bibtex
 #+BEGIN_SRC emacs-lisp :tangle yes
-   (setq bibtex-maintain-sorted-entries 't)
-   (setq bibtex-align-at-equal-sign 't)
-   (setq bibtex-autokey-year-length 4)
-   (setq bibtex-autokey-titlewords 0)
-   (setq bibtex-autokey-titleword-length 0)
-   (setq bibtex-completion-pdf-extension ".pdf")
-   (setq bibtex-completion-find-additional-pdfs nil)
+  (setq bibtex-maintain-sorted-entries 't)
+  (setq bibtex-align-at-equal-sign 't)
+  (setq bibtex-autokey-year-length 4)
+  (setq bibtex-autokey-titlewords 0)
+  (setq bibtex-autokey-titleword-length 0)
+  (setq bibtex-completion-pdf-extension ".pdf")
+  (setq bibtex-completion-find-additional-pdfs nil)
 
-   ;; Cleaning from Nick Higham
-   (setq bibtex-entry-format
-         '(page-dashes required-fields numerical-fields whitespace
-           last-comma delimiters unify-case sort-fields realign strings braces))
+  ;; Cleaning from Nick Higham
+  (setq bibtex-entry-format
+        '(page-dashes required-fields numerical-fields whitespace
+                      last-comma delimiters unify-case sort-fields realign strings braces))
 
-   (setq bibtex-field-delimiters 'double-quotes)
-   (setq bibtex-entry-delimiters 'braces)
-   (setq bibtex-field-braces-alist '((("title" "journal") "DNA")
-                                     (("title") "2D")
-                                     (("title") "3D")
-                                     (("title") "OTF")))
+  (setq bibtex-field-delimiters 'double-quotes)
+  (setq bibtex-entry-delimiters 'braces)
+  (setq bibtex-field-braces-alist '((("title" "journal") "DNA")
+                                    (("title") "2D")
+                                    (("title") "3D")
+                                    (("title") "OTF")))
 
-   ;; I prefer closing brace on its own line after cleaning BibTeX entry.
-   (setq bibtex-clean-entry-hook 'mybibtex-clean-extra)
-   (defun mybibtex-clean-extra ()
-     (progn (bibtex-end-of-entry) (newline) (newline)))
-   ;; (bibtex-beginning-of-entry) (bibtex-next-field) ;; not working
-   ;;(newline) (delete-backward-character) ;; not working
+  ;; I prefer closing brace on its own line after cleaning BibTeX entry.
+  (setq bibtex-clean-entry-hook 'mybibtex-clean-extra)
+  (defun mybibtex-clean-extra ()
+    (progn (bibtex-end-of-entry) (newline) (newline)))
+  ;; (bibtex-beginning-of-entry) (bibtex-next-field) ;; not working
+  ;;(newline) (delete-backward-character) ;; not working
 
-   (setq bibtex-completion-additional-search-fields '(keywords))
+  (setq bibtex-completion-additional-search-fields '(keywords))
 
-   ;; Faster navigation
-   ;; http://kitchingroup.cheme.cmu.edu/blog/2014/10/13/Navigating-your-bibtex-file/
-   (defun bibtex-next-entry (&optional n)
-     "Jump to the beginning of the next bibtex entry. N is a prefix
+  ;; Faster navigation
+  ;; http://kitchingroup.cheme.cmu.edu/blog/2014/10/13/Navigating-your-bibtex-file/
+  (defun bibtex-next-entry (&optional n)
+    "Jump to the beginning of the next bibtex entry. N is a prefix
    argument. If it is numeric, jump that many entries
    forward. Negative numbers do nothing."
-     (interactive "P")
-     ;; Note if we start at the beginning of an entry, nothing
-     ;; happens. We need to move forward a char, and call again.
-     (when (= (point) (save-excursion
-                        (bibtex-beginning-of-entry)))
-       (forward-char)
-       (bibtex-next-entry))
+    (interactive "P")
+    ;; Note if we start at the beginning of an entry, nothing
+    ;; happens. We need to move forward a char, and call again.
+    (when (= (point) (save-excursion
+                       (bibtex-beginning-of-entry)))
+      (forward-char)
+      (bibtex-next-entry))
 
-     ;; search forward for an entry 
-     (when 
-         (re-search-forward bibtex-entry-head nil t (and (numberp n) n))
-       ;; go to beginning of the entry
-       (bibtex-beginning-of-entry)))
+    ;; search forward for an entry 
+    (when 
+        (re-search-forward bibtex-entry-head nil t (and (numberp n) n))
+      ;; go to beginning of the entry
+      (bibtex-beginning-of-entry)))
 
-   (defun bibtex-previous-entry (&optional n)
-     "Jump to beginning of the previous bibtex entry. N is a prefix
+  (defun bibtex-previous-entry (&optional n)
+    "Jump to beginning of the previous bibtex entry. N is a prefix
    argument. If it is numeric, jump that many entries back."
-     (interactive "P")
-     (bibtex-beginning-of-entry)
+    (interactive "P")
+    (bibtex-beginning-of-entry)
     (when 
         (re-search-backward bibtex-entry-head nil t (and (numberp n) n))
       (bibtex-beginning-of-entry)))
 
-   (defun jmax-bibtex-mode-keys ()
-     "Modify keymaps used by `bibtex-mode'."
-     (local-set-key (kbd "M-n") 'bibtex-next-entry)
-     (local-set-key (kbd "M-p") 'bibtex-previous-entry))
+  (defun jmax-bibtex-mode-keys ()
+    "Modify keymaps used by `bibtex-mode'."
+    (local-set-key (kbd "M-n") 'bibtex-next-entry)
+    (local-set-key (kbd "M-p") 'bibtex-previous-entry))
 
-   ;; add to bibtex-mode-hook
-   (add-hook 'bibtex-mode-hook 'jmax-bibtex-mode-keys)
+  ;; add to bibtex-mode-hook
+  (add-hook 'bibtex-mode-hook 'jmax-bibtex-mode-keys)
 
 #+END_SRC
 ** Helm
@@ -264,75 +263,75 @@
 #+END_SRC
 ** Org-mode
 #+BEGIN_SRC emacs-lisp :tangle yes
-    (setq org-directory "~/Dropbox/org/")
-    (setq org-agenda-files '("reference.org" "projects.org" "calendar/"))
-    (setq org-hide-block-startup t)
+  (setq org-directory "~/Dropbox/org/")
+  (setq org-agenda-files '("reference.org" "projects.org" "calendar/"))
+  (setq org-hide-block-startup nil)
 
-    (setq org-todo-keywords
-	  '((sequence "TODO(t)" "STARTED(s)" "WAITING(w)" "|" "CANCELED(c)" "DONE(d)")))
+  (setq org-todo-keywords
+        '((sequence "TODO(t)" "STARTED(s)" "WAITING(w)" "|" "CANCELED(c)" "DONE(d)")))
 
-    (setq org-todo-keyword-faces
-	       '(("TODO" . "pink")
-		 ("STARTED" . "yellow")
-		 ("WAITING" . "orange")
-		 ("CANCELED" . "red")
-		 ("DONE" . "green")))
+  (setq org-todo-keyword-faces
+        '(("TODO" . "pink")
+          ("STARTED" . "yellow")
+          ("WAITING" . "orange")
+          ("CANCELED" . "red")
+          ("DONE" . "green")))
 
-    (setq org-tag-alist '((:startgroup . nil)
-			 ("@work" . ?w) ("@home" . ?h) ("errand" . ?e)
-			 (:endgroup .nil)))
-    (setq org-tags-column -85)
+  (setq org-tag-alist '((:startgroup . nil)
+                        ("@work" . ?w) ("@home" . ?h) ("errand" . ?e)
+                        (:endgroup .nil)))
+  (setq org-tags-column -85)
 
-    (setq org-log-done 'time)
+  (setq org-log-done 'time)
 
-    (setq org-default-notes-file "capture.org")
-    (setq org-agenda-files (quote ("reference.org" "projects.org" "calendar/")))
-    (setq org-archive-location "archive/datetree.org::datetree/* Finished Tasks")
-    (setq org-enforce-todo-dependencies t)
-    (setq org-agenda-include-diary t) ;; Read sexp diary entries
-    (setq org-agenda-window-setup "current-window")
-    (setq org-deadline-warning-days 7)
+  (setq org-default-notes-file "capture.org")
+  (setq org-agenda-files (quote ("reference.org" "projects.org" "calendar/")))
+  (setq org-archive-location "archive/datetree.org::datetree/* Finished Tasks")
+  (setq org-enforce-todo-dependencies t)
+  (setq org-agenda-include-diary t) ;; Read sexp diary entries
+  (setq org-agenda-window-setup "current-window")
+  (setq org-deadline-warning-days 7)
 
-    (global-set-key (kbd "C-c a") 'org-agenda-list)
-    (global-set-key (kbd "C-c c") 'org-capture)
-    (global-set-key (kbd "C-c l") 'org-store-link)
+  (global-set-key (kbd "C-c a") 'org-agenda-list)
+  (global-set-key (kbd "C-c c") 'org-capture)
+  (global-set-key (kbd "C-c l") 'org-store-link)
 
-    (global-set-key (kbd "C-c s") (lambda () (interactive) (org-content 2)))
+  (global-set-key (kbd "C-c s") (lambda () (interactive) (org-content 2)))
 
-    ;; Save window views
-    (setq org-agenda-restore-windows-after-quit t)
+  ;; Save window views
+  (setq org-agenda-restore-windows-after-quit t)
 
-    ;; Org quick done and archive
-    (defun org-toggle-todo-and-fold ()
-      (interactive)
-      (save-excursion
-	(org-back-to-heading t) ;; Make sure command works even if point is
-				;; below target heading
-	(cond ((looking-at "\*+ TODO")
-	       (org-todo "DONE")
-	       (hide-subtree))
-	      ((looking-at "\*+ DONE")
-	       (org-todo "TODO")
-	       (hide-subtree))
-	      (t (message "Can only toggle between TODO and DONE.")))))
+  ;; Org quick done and archive
+  (defun org-toggle-todo-and-fold ()
+    (interactive)
+    (save-excursion
+      (org-back-to-heading t) ;; Make sure command works even if point is
+      ;; below target heading
+      (cond ((looking-at "\*+ TODO")
+             (org-todo "DONE")
+             (hide-subtree))
+            ((looking-at "\*+ DONE")
+             (org-todo "TODO")
+             (hide-subtree))
+            (t (message "Can only toggle between TODO and DONE.")))))
 
-    (global-set-key (kbd "C-x C-d") 'org-toggle-todo-and-fold)
+  (global-set-key (kbd "C-x C-d") 'org-toggle-todo-and-fold)
 
-    ;; Org export
-    (setq org-export-dispatch-use-expert-ui 't)
+  ;; Org export
+  (setq org-export-dispatch-use-expert-ui 't)
 
-    ;; Org indent mode
-    (setq org-startup-indented t)
+  ;; Org indent mode
+  (setq org-startup-indented t)
 
-    ;;(require 'org-mu4e)
+  ;;(require 'org-mu4e)
 
-    ;; Start everything folded
-    (setq org-hide-block-startup 't)
-    (setq org-startup-folded 't)
+  ;; Start everything folded
+  ;;(setq org-hide-block-startup 't)
+  (setq org-startup-folded 't)
 
-    ;;
-    (require 'calfw)
-    (require 'calfw-org)
+  ;;
+  (require 'calfw)
+  (require 'calfw-org)
 
   (defun my-open-calendar ()
     (interactive)
@@ -341,7 +340,7 @@
      :contents-sources
      (list
       (cfw:org-create-source "LightSkyBlue")  ; orgmode source
-     )))
+      )))
   (global-set-key (kbd "C-x a") 'my-open-calendar)
 
   (setq cfw:render-line-breaker 'cfw:render-line-breaker-wordwrap)
@@ -388,7 +387,6 @@
               (if (eq window-system 'x)
                                   (font-lock-mode 1))))
 #+END_SRC
-
 ** Asymptote
 #+BEGIN_SRC emacs-lisp :tangle yes
   (add-to-list 'load-path "/usr/local/texlive/2017/texmf-dist/asymptote")
@@ -397,7 +395,6 @@
   (autoload 'asy-insinuate-latex "asy-mode.el" "Asymptote insinuate LaTeX." t)
   (add-to-list 'auto-mode-alist '("\\.asy$" . asy-mode))
 #+END_SRC
-
 ** Shell
 #+BEGIN_SRC emacs-lisp :tangle yes
   ;; Shell load .bash_profile
@@ -457,27 +454,27 @@
 #+END_SRC
 ** Minor mode hooks
 #+BEGIN_SRC emacs-lisp :tangle yes
-    (add-hook 'python-mode-hook 'fci-mode)
-    (add-hook 'python-mode-hook 'linum-mode)
-    (add-hook 'python-mode-hook 'abbrev-mode)
+  (add-hook 'python-mode-hook 'fci-mode)
+  (add-hook 'python-mode-hook 'linum-mode)
+  (add-hook 'python-mode-hook 'abbrev-mode)
 
-    ;;(add-hook 'LaTeX-mode-hook 'fci-mode)
-    ;;(add-hook 'LaTeX-mode-hook 'linum-mode)
-    (add-hook 'text-mode-hook 'visual-line-mode)
-    (add-hook 'LaTeX-mode-hook 'visual-line-mode)
-    (add-hook 'LaTeX-mode-hook 'flyspell-mode)
-    (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
-    (setq reftex-plug-into-AUCTeX t)
+  ;;(add-hook 'LaTeX-mode-hook 'fci-mode)
+  ;;(add-hook 'LaTeX-mode-hook 'linum-mode)
+  (add-hook 'text-mode-hook 'visual-line-mode)
+  (add-hook 'LaTeX-mode-hook 'visual-line-mode)
+  (add-hook 'LaTeX-mode-hook 'flyspell-mode)
+  (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
+  (setq reftex-plug-into-AUCTeX t)
 
-    (add-hook 'lisp-mode-hook 'linum-mode)
-    (add-hook 'org-mode-hook 'org-indent-mode)
-    (add-hook 'org-mode-hook (lambda () (diminish 'org-indent-mode "")))
-    (add-hook 'org-mode-hook 'org-beamer-mode)
-    (add-hook 'org-mode-hook (lambda () (diminish 'org-beamer-mode "")))
+  (add-hook 'lisp-mode-hook 'linum-mode)
+  (add-hook 'org-mode-hook 'org-indent-mode)
+  (add-hook 'org-mode-hook (lambda () (diminish 'org-indent-mode "")))
+  (add-hook 'org-mode-hook 'org-beamer-mode)
+  (add-hook 'org-mode-hook (lambda () (diminish 'org-beamer-mode "")))
 
-    (add-hook 'math-mode 'linum-mode)
+  (add-hook 'math-mode 'linum-mode)
 
-    (add-hook 'yaml-mode-hook 'yafolding-mode)
+  (add-hook 'yaml-mode-hook 'yafolding-mode)
 
 #+END_SRC
 ** Ido
@@ -494,8 +491,8 @@
 #+END_SRC
 ** yasnippet
 #+BEGIN_SRC emacs-lisp :tangle yes
-    (setq yas-snippet-dirs '("~/.emacs.d/snippets"))
-    (yas-global-mode 1)
+  (setq yas-snippet-dirs '("~/.emacs.d/snippets"))
+  (yas-global-mode 1)
 #+END_SRC
 ** Misc
 #+BEGIN_SRC emacs-lisp :tangle yes
@@ -518,12 +515,12 @@
 #+END_SRC
 * Backups
 #+BEGIN_SRC emacs-lisp :tangle yes
-   (setq backup-directory-alist `(("." . "~/.saves")))
-   (setq backup-by-copying t)
-   (setq delete-old-versions t
-         kept-new-versions 6
-         kept-old-versions 2
-         version-control t)
+  (setq backup-directory-alist `(("." . "~/.saves")))
+  (setq backup-by-copying t)
+  (setq delete-old-versions t
+        kept-new-versions 6
+        kept-old-versions 2
+        version-control t)
  #+END_SRC
 * Appearance
 ** Window
@@ -776,7 +773,6 @@
   (global-set-key (kbd "C-c C-v") 'pbpaste)
   (global-set-key (kbd "C-c C-x") 'pbcut)
 #+END_SRC
-
 ** Fullscreen
 #+BEGIN_SRC emacs-lisp :tangle yes
   (global-set-key (kbd "C-c C-f") 'toggle-frame-fullscreen)
@@ -810,7 +806,6 @@
   (find-file "~/Dropbox/org/reference.org")
   (find-file "~/Dropbox/org/projects.org")
   (switch-to-buffer "projects.org")
-
   (other-window 1)
   (switch-to-buffer "*shell1*")
 

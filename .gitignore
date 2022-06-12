@@ -1,1 +1,10 @@
-*egg-info/
+# Ignore everything
+*
+
+# But not these...
+!.gitignore
+!.gitconfig
+!.emacs.d/*
+!.bashrc
+
+# etc...
