@@ -697,3 +697,4 @@ i.e. change right window to bottom, or change bottom window to right."
 ;; Full size frames
 (add-to-list 'initial-frame-alist '(fullscreen . maximized))
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
+(put 'downcase-region 'disabled nil)

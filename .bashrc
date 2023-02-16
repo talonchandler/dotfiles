@@ -1,6 +1,8 @@
 # Prompt
 PS1="\[\e[91m\][\u@\h]\[\e[0m\] \[\e[95m\]\w\[\e[31m\]\n\[\e[96m\]\t $ \[\e[0m\]"
 
+export PATH="~/scripts:$PATH"
+
 # Setting colour scheme
 export CLICOLOR=1 # turns on file color
 export LSCOLORS=ExFxCxDxBxEGEDABAGACAD # lightens file colors
@@ -27,3 +29,8 @@ export BASH_SILENCE_DEPRECATION_WARNING=1
 
 # Enable conda in scripts and emacs shell (https://github.com/conda/conda/issues/7980)
 source /opt/anaconda3/etc/profile.d/conda.sh
+
+# chruby setup
+# source /opt/homebrew/opt/chruby/share/chruby/chruby.sh
+# source /opt/homebrew/opt/chruby/share/chruby/auto.sh
+# chruby ruby-3.1.2

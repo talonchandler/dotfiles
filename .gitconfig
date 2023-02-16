@@ -3,7 +3,7 @@
 	editor = emacs
 [user]
 	name = Talon Chandler
-	email = talonchandler@talonchandler.com
+	email = talonchandler@gmail.com
 [alias]
 	st = status -s
 	cm = commit -m
@@ -18,3 +18,5 @@
 	process = git-lfs filter-process
 	required = true
 	clean = git-lfs clean -- %f
+[blame]
+	ignoreRevsFile = .git-blame-ignore-revs
