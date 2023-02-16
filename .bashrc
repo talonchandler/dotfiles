@@ -8,29 +8,24 @@ export CLICOLOR=1 # turns on file color
 export LSCOLORS=ExFxCxDxBxEGEDABAGACAD # lightens file colors
 export TERM="xterm-256color"
 
-# Add brew paths
-# export PATH="/usr/local/sbin:$PATH"
-eval $(/opt/homebrew/bin/brew shellenv)
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/hpc/apps/x86_64/anaconda/2021_09_16/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/hpc/apps/x86_64/anaconda/2021_09_16/etc/profile.d/conda.sh" ]; then
+        . "/hpc/apps/x86_64/anaconda/2021_09_16/etc/profile.d/conda.sh"
+    else
+        export PATH="/hpc/apps/x86_64/anaconda/2021_09_16/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
 
-# Ruby
-# export PATH="/usr/local/opt/ruby@2.1/bin:$PATH"
-# export PATH="/usr/local/lib/ruby/gems/2.1.0/bin/:$PATH"
+alias emacs='emacs -nw'
 
-# Custom aliases
-alias ttop='top -R -F -s 10 -o rsize'
-alias size='du -sh * | sort -hr'
-alias wifi='osx-wifi-cli' # npm install osx-wifi-cli
+module load comp_micro
+conda activate recorder
 
-# Install iterm integrations
-source /Users/talon.chandler/.iterm2_shell_integration.bash
 
-# Turn off zsh warning osxexport BASH_SILENCE_DEPRECATION_WARNING1=
-export BASH_SILENCE_DEPRECATION_WARNING=1
-
-# Enable conda in scripts and emacs shell (https://github.com/conda/conda/issues/7980)
-source /opt/anaconda3/etc/profile.d/conda.sh
-
-# chruby setup
-# source /opt/homebrew/opt/chruby/share/chruby/chruby.sh
-# source /opt/homebrew/opt/chruby/share/chruby/auto.sh
-# chruby ruby-3.1.2

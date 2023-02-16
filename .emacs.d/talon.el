@@ -302,8 +302,8 @@
 (setq org-startup-folded 't)
 
 ;;
-(require 'calfw)
-(require 'calfw-org)
+;;(require 'calfw)
+;;(require 'calfw-org)
 
 (defun my-open-calendar ()
   (interactive)
@@ -384,11 +384,11 @@
 ;  (setq pdf-info-epdfinfo-program "/usr/local/bin/epdfinfo"))
 ;(pdf-tools-install)
 
-(require 'fill-column-indicator)
-(setq fci-rule-color "white")
-(setq-default fill-column 80)
-(setq fci-rule-column 80)
-(setq fci-rule-use-dashes nil)
+;;(require 'fill-column-indicator)
+;;(setq fci-rule-color "white")
+;;(setq-default fill-column 80)
+;;(setq fci-rule-column 80)
+;;(setq fci-rule-use-dashes nil)
 
 (setq TeX-PDF-mode t)
 (setq TeX-save-query nil) ;;autosave before compiling
@@ -437,8 +437,8 @@
 (setq ido-ignore-files '("\.ldf" "\.fdb_latexmk"))
 (setq ido-max-window-height 1)
 
-(setq yas-snippet-dirs '("~/.emacs.d/snippets"))
-(yas-global-mode 1)
+;;(setq yas-snippet-dirs '("~/.emacs.d/snippets"))
+;;(yas-global-mode 1)
 
 ;; Use autocomplete
 ;;(global-auto-complete-mode t)
@@ -630,11 +630,11 @@ i.e. change right window to bottom, or change bottom window to right."
 
  (global-set-key (kbd "C-x 8") 'window-toggle-split-direction)
 
-(require 'buffer-move)
-(global-set-key (kbd "<C-S-up>")     'buf-move-up)
-(global-set-key (kbd "<C-S-down>")   'buf-move-down)
-(global-set-key (kbd "<C-S-left>")   'buf-move-left)
-(global-set-key (kbd "<C-S-right>")  'buf-move-right)
+;;(require 'buffer-move)
+;;n(global-set-key (kbd "<C-S-up>")     'buf-move-up)
+;;(global-set-key (kbd "<C-S-down>")   'buf-move-down)
+;;(global-set-key (kbd "<C-S-left>")   'buf-move-left)
+;;(global-set-key (kbd "<C-S-right>")  'buf-move-right)
 
 (global-set-key (kbd "M-c") 'comment-region)
 (global-set-key (kbd "M-u") 'uncomment-region)
@@ -683,18 +683,17 @@ i.e. change right window to bottom, or change bottom window to right."
 (load custom-file 'noerror)
 
 ;; Initial window layout
+;;(find-file "~/.emacs.d/talon.org")
 (shell "*shell1*")
-(find-file "~/.emacs.d/talon.org")
-(find-file "~/Dropbox/org/reference.org")
-(find-file "~/Dropbox/org/projects.org")
-(switch-to-buffer "projects.org")
-(other-window 1)
-(switch-to-buffer "*shell1*")
+;;(find-file "~/Dropbox/org/reference.org")
+;;(find-file "~/Dropbox/org/projects.org")
+;;(switch-to-buffer "projects.org")
+;;(other-window 1)
+;;(switch-to-buffer "*shell1*")
 
-(window-toggle-split-direction)
-(buf-move-right)
+;;(window-toggle-split-direction)
+;;(buf-move-right)
 
 ;; Full size frames
 (add-to-list 'initial-frame-alist '(fullscreen . maximized))
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
-(put 'downcase-region 'disabled nil)

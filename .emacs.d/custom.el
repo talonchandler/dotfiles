@@ -4,7 +4,8 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(TeX-command-list
-   '(("TeX" "%(PDF)%(tex) %(file-line-error) %(extraopts) %`%S%(PDFout)%(mode)%' %t" TeX-run-TeX nil
+   (quote
+    (("TeX" "%(PDF)%(tex) %(file-line-error) %(extraopts) %`%S%(PDFout)%(mode)%' %t" TeX-run-TeX nil
       (plain-tex-mode texinfo-mode ams-tex-mode)
       :help "Run plain TeX")
      ("LaTeX" "%`%l%(mode)%' %t; open %s" TeX-run-TeX nil
@@ -42,14 +43,16 @@
      ("Spell" "(TeX-ispell-document \"\")" TeX-run-function nil t :help "Spell-check the document")
      ("Clean" "TeX-clean" TeX-run-function nil t :help "Delete generated intermediate files")
      ("Clean All" "(TeX-clean t)" TeX-run-function nil t :help "Delete generated intermediate and output files")
-     ("Other" "" TeX-run-command t t :help "Run an arbitrary command")))
+     ("Other" "" TeX-run-command t t :help "Run an arbitrary command"))))
  '(auth-source-save-behavior nil)
  '(cfw:display-calendar-holidays nil)
  '(custom-safe-themes
-   '("ad24ea739f229477ea348af968634cb7a0748c9015110a777c8effeddfa920f5" "e7ec0cc3ce134cc0bd420b98573bbd339a908ac24162b8034c98e1ba5ee1f9f6" default))
+   (quote
+    ("ad24ea739f229477ea348af968634cb7a0748c9015110a777c8effeddfa920f5" "e7ec0cc3ce134cc0bd420b98573bbd339a908ac24162b8034c98e1ba5ee1f9f6" default)))
  '(package-selected-packages
-   '(buffer-move yasnippet yafolding highlight-indentation yaml-mode calfw calfw-org auto-complete helm-bibtex diminish esup pdf-tools w3m forecast powerline twittering-mode magit emojify mu4e-alert xterm-color cl-lib fill-column-indicator elpy))
- '(send-mail-function 'mailclient-send-it)
+   (quote
+    (buffer-move yasnippet yafolding highlight-indentation yaml-mode calfw calfw-org auto-complete helm-bibtex diminish esup pdf-tools w3m forecast powerline twittering-mode magit emojify mu4e-alert xterm-color cl-lib fill-column-indicator elpy)))
+ '(send-mail-function (quote mailclient-send-it))
  '(show-trailing-whitespace t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
